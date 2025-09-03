@@ -1,0 +1,14 @@
+server:
+  port: 9090   # 원하는 포트 번호
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/   # JSP 등 뷰 파일 위치
+      suffix: .jsp              # 뷰 파일 확장자
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb   # DB URL
+    username: myuser                        # DB 계정
+    password: mypassword                    # DB 비밀번호
+    driver-class-name: com.mysql.cj.jdbc.Driver
