@@ -11,7 +11,7 @@
            http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!-- Controller 자동 스캔 -->
-    <context:component-scan base-package="com.lichihyung.springplayground"/>
+    <context:component-scan base-package="com.chihyunglee.springplayground.controller"/>
 
     <!-- Spring MVC 기본 설정 -->
     <mvc:annotation-driven />
