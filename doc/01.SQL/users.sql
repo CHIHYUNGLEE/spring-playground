@@ -7,3 +7,6 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  -- 정보 수정일
     role VARCHAR(20) DEFAULT 'USER'         -- 권한 (USER / ADMIN 등)
 );
+
+--admin 계정 추가
+INSERT INTO users (username, password, email, role) VALUES ('admin', 'admin123', 'admin@example.com', 'ADMIN');
