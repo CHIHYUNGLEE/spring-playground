@@ -1,6 +1,5 @@
 package com.chihyunglee.springplayground.controller;
 
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -9,16 +8,19 @@ public class HomeController {
 
     @GetMapping("/")
     public String root() {
-        return "home"; // Security가 인증 관리
+    	System.out.println("Root controller called");
+        return "home"; // 별도의 랜딩 페이지
     }
 
     @GetMapping("/home")
     public String home() {
-        return "home";
+    	System.out.println("home controller called");
+        return "home"; // 로그인 후 접근하는 홈
     }
 
     @GetMapping("/login")
     public String login() {
+    	System.out.println("Login controller called");
         return "login"; // 세션 체크 제거, Security가 처리
     }
 

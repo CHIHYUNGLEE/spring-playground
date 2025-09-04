@@ -12,23 +12,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // 포트폴리오용 CSRF 비활성화
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/register", "/findPassword", "/css/**", "/js/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/doLogin").permitAll()
-                .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-                .loginPage("/login")              // 커스텀 login.jsp
-                .loginProcessingUrl("/doLogin")   // POST 로그인 처리 URL
-                .defaultSuccessUrl("/home", true) // 로그인 성공 후 홈
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .permitAll()
-            );
-        return http.build();
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/", "/home", "/login", "/register", "/findPassword", 
+                            "/css/**", "/js/**", "/images/**", "/doLogin").permitAll()
+            .anyRequest().permitAll() // 아직은 모든 요청 허용
+        )
+        .formLogin(form -> form
+            .loginPage("/login")
+            .loginProcessingUrl("/doLogin")
+            .usernameParameter("username")
+            .passwordParameter("password")
+            .defaultSuccessUrl("/home", true)
+            .failureUrl("/login?error=true")
+            .permitAll()
+        );
+    
+    return http.build();
+
     }
 }
