@@ -29,6 +29,11 @@
         <div class="error-msg">${errorMsg}</div>
     </c:if>
 
+	<!-- 회원가입후 로그인 요청 -->
+	<c:if test="${not empty registerSuccessMsg}">
+	    <script>alert('${registerSuccessMsg}');</script>
+	</c:if>
+	
     <div class="links">
         <a href="home">홈으로</a> | <a href="register">회원가입</a> | <a href="findPassword">비밀번호 찾기</a>
     </div>
