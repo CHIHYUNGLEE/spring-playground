@@ -79,6 +79,13 @@
 	        <artifactId>jakarta.servlet.jsp.jstl</artifactId>
 	        <version>3.0.1</version>
 	    </dependency>
+	    
+	    <!-- Spring Security TagLib -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-taglibs</artifactId>
+		    <version>6.2.0</version> <!-- 사용중인 Spring Security 버전에 맞춰 변경 -->
+		</dependency>
     </dependencies>
 
     <build>
