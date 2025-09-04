@@ -43,14 +43,13 @@ public class SecurityConfig {
         .formLogin(form -> form
             .loginPage("/login")
             .loginProcessingUrl("/doLogin")
-            .usernameParameter("username")
+            .usernameParameter("userId")
             .passwordParameter("password")
             .defaultSuccessUrl("/home", true)
             .failureUrl("/login?error=true")
             .permitAll()
         );
     
-    return http.build();
-
+        return http.build();
     }
 }
