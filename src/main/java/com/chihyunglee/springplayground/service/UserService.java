@@ -32,8 +32,8 @@ public class UserService {
     }
 
     // 비밀번호 찾기 (가입 이메일 확인)
-    public Optional<User> findByUsernameAndEmail(String username, String email) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
+    public Optional<User> findByUsernameAndEmail(String userId, String email) {
+        Optional<User> userOpt = userRepository.findByUsername(userId);
         if (userOpt.isPresent() && userOpt.get().getEmail().equals(email)) {
             return userOpt;
         }
