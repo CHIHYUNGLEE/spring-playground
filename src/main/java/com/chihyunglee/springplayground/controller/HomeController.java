@@ -1,11 +1,21 @@
 package com.chihyunglee.springplayground.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.chihyunglee.springplayground.model.User;
+import com.chihyunglee.springplayground.service.UserService;
 
 @Controller
 public class HomeController {
 
+    @Autowired
+    private UserService userService; // ✅ 인스턴스 주입
+    
     @GetMapping("/")
     public String root() {
     	System.out.println("Root controller called");
@@ -19,16 +29,42 @@ public class HomeController {
     }
 
     @GetMapping("/login")
-    public String login() {
-    	System.out.println("Login controller called");
-        return "login"; // 세션 체크 제거, Security가 처리
-    }
+    public String login(@RequestParam(value = "error", required = false) String error,
+            org.springframework.ui.Model model) {
+		System.out.println("Login controller called");
+		
+		if (error != null) {
+		model.addAttribute("errorMsg", "아이디 또는 비밀번호가 틀렸습니다.");
+	}
+
+return "login"; // login.jsp로 이동
+}
 
     @GetMapping("/register")
     public String register() {
         return "register";
     }
 
+    @PostMapping("/register")
+    public String doRegister(@RequestParam String username,
+                             @RequestParam String password,
+                             @RequestParam String email,
+                             Model model) {
+        // User 객체 생성
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+
+        // DB 저장
+        userService.register(user);
+
+        // 성공 메시지
+        model.addAttribute("msg", "회원가입 성공! 로그인 해주세요.");
+
+        return "login"; // 가입 후 로그인 페이지로 이동
+    }
+    
     @GetMapping("/findPassword")
     public String findPassword() {
         return "findPassword";

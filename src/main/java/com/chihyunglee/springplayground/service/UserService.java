@@ -13,6 +13,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    //암호화
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // 회원가입
