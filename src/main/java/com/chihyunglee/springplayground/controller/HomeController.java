@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.chihyunglee.springplayground.model.User;
 import com.chihyunglee.springplayground.service.UserService;
 
-import jakarta.servlet.http.HttpSession;
-
 @Controller
 public class HomeController {
 	
@@ -40,22 +38,6 @@ public class HomeController {
 		}
 
 		return "login"; // login.jsp로 이동
-    }
-    
-    @PostMapping("/doLogin")
-    public String doLogin(@RequestParam String username,
-                          @RequestParam String password,
-                          HttpSession session,
-                          Model model) {
-        boolean success = userService.login(username, password);
-        if (success) {
-            session.setAttribute("username", username);
-            model.addAttribute("loginMsg", "로그인 성공! 환영합니다, " + username + "님.");
-            return "home";  // 로그인 성공 후 홈 페이지
-        } else {
-            model.addAttribute("errorMsg", "아이디 또는 비밀번호가 틀렸습니다.");
-            return "login"; // 로그인 실패 시 다시 로그인 페이지
-        }
     }
 
     @GetMapping("/register")
