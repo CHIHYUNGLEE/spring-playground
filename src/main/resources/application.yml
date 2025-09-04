@@ -1,6 +1,9 @@
 server:
   port: 9090   # 원하는 포트 번호
-
+  error:
+    whitelabel:
+      enabled: false   # 기본 Whitelabel Error Page 비활성화
+    path: /error       # 에러 시 보여줄 경로
 spring:
   mvc:
     view:
