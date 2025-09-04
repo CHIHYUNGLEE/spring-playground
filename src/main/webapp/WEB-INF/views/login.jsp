@@ -88,7 +88,7 @@
             <button type="submit">로그인</button>
         </form>
         <div class="links">
-            <a href="register">회원가입</a> | <a href="#">비밀번호 찾기</a>
+            <a href="register">회원가입</a> | <a href="findPassword">비밀번호 찾기</a>
         </div>
     </div>
 </body>

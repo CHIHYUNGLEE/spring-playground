@@ -20,4 +20,9 @@ public class HomeController {
     public String register() {
         return "register"; // /WEB-INF/views/register.jsp
     }
+    
+    @GetMapping("/findPassword")
+    public String findPassword() {
+        return "findPassword"; // /WEB-INF/views/findPassword.jsp
+    }
 }
