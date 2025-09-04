@@ -56,8 +56,13 @@
         <p>포트폴리오 프로젝트에 오신 걸 환영합니다.<br>
         로그인 후 다양한 기능을 이용해 보세요!</p>
         <div class="btn-group">
-            <a href="login" class="btn">로그인</a>
-            <a href="register" class="btn">회원가입</a>
+	        <% if (session.getAttribute("username") != null) { %>
+	            <span>안녕하세요, <%= session.getAttribute("username") %>님</span>
+	            <a href="logout">로그아웃</a>
+	        <% } else { %>
+	            <a href="login">로그인</a>
+	            <a href="register">회원가입</a>
+	        <% } %>
         </div>
     </div>
 </body>

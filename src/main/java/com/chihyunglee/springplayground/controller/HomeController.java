@@ -2,6 +2,9 @@ package com.chihyunglee.springplayground.controller;
 
 import com.chihyunglee.springplayground.model.User;
 import com.chihyunglee.springplayground.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,29 +16,47 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-    // 홈
+    // 홈 화면 접근 시
     @GetMapping("/home")
-    public String home() { return "home"; }
+    public String home(HttpSession session) {
+        if (session.getAttribute("username") == null) {
+            return "redirect:/login"; // 세션 없으면 login으로
+        }
+        return "home";
+    }
 
-    // 로그인 화면
+    // 로그인 화면 접근 시
     @GetMapping("/login")
-    public String login() { return "login"; }
-
+    public String login(HttpSession session) {
+        if (session.getAttribute("username") != null) {
+            return "redirect:/home"; // 세션 있으면 home으로
+        }
+        return "login";
+    }
+    
     // 로그인 처리
     @PostMapping("/login")
     public String doLogin(@RequestParam String username,
                           @RequestParam String password,
+                          HttpSession session,
                           Model model) {
         boolean success = userService.login(username, password);
         if (success) {
-            model.addAttribute("username", username);
-            return "home";
+            session.setAttribute("username", username); // 세션에 저장
+            return "redirect:/home";  // 로그인 후 home으로
         } else {
             model.addAttribute("error", "아이디 또는 비밀번호가 틀렸습니다.");
             return "login";
         }
     }
-
+    
+    // 로그아웃
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // 세션 제거
+        return "redirect:/login";
+    }
+    
     // 회원가입 화면
     @GetMapping("/register")
     public String register() { return "register"; }
