@@ -12,7 +12,7 @@
         .login-box button { width:100%; padding:12px; margin-top:20px; border:none; border-radius:8px; background:linear-gradient(to right, #6a11cb, #2575fc); color:white; cursor:pointer;}
         .login-box .links { margin-top:15px; font-size:12px;}
         .login-box .links a { color:#2575fc; text-decoration:none;}
-        .error-msg { color:red; margin-top:15px; font-size:13px; }
+        .error-msg { color:red; margin-top:15px; font-size:15px; }
     </style>
 </head>
 <body>
