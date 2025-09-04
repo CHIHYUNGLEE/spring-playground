@@ -64,7 +64,8 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String doRegister(@RequestParam String username,
+    public String doRegister(@RequestParam String userId,
+    						 @RequestParam String userName,
                              @RequestParam String password,
                              @RequestParam String email,
                              Model model) {
@@ -77,7 +78,8 @@ public class HomeController {
         
         // User 객체 생성
         User user = new User();
-        user.setUsername(username);
+        user.setUserId(userId);
+        user.setUserName(userName);
         user.setPassword(password);
         user.setEmail(email);
 

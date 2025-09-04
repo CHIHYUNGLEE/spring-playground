@@ -1,6 +1,7 @@
 CREATE TABLE users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,   -- 회원 고유 번호
-    username VARCHAR(50) NOT NULL UNIQUE,   -- 아이디
+    user_id VARCHAR(50) NOT NULL UNIQUE,    -- 이름
+    user_name VARCHAR(50) NOT NULL UNIQUE,  -- 아이디
     password VARCHAR(255) NOT NULL,         -- 비밀번호 (암호화 필요)
     email VARCHAR(100) NOT NULL UNIQUE,     -- 이메일
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- 가입일
@@ -9,4 +10,4 @@ CREATE TABLE users (
 );
 
 --admin 계정 추가
-INSERT INTO users (username, password, email, role) VALUES ('admin', 'admin123', 'admin@example.com', 'ADMIN');
+INSERT INTO users (user_id, user_name, password, email, role) VALUES ('이치형', 'admin', 'admin123', 'admin@example.com', 'ADMIN');
