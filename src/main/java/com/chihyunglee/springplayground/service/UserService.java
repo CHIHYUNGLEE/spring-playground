@@ -24,7 +24,7 @@ public class UserService {
 
     // 로그인
     public boolean login(String username, String rawPassword) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
+        Optional<User> userOpt = userRepository.findByUserId(username);
         if (userOpt.isPresent()) {
             return passwordEncoder.matches(rawPassword, userOpt.get().getPassword());
         }
@@ -33,7 +33,7 @@ public class UserService {
 
     // 비밀번호 찾기 (가입 이메일 확인)
     public Optional<User> findByUsernameAndEmail(String userId, String email) {
-        Optional<User> userOpt = userRepository.findByUsername(userId);
+        Optional<User> userOpt = userRepository.findByUserId(userId);
         if (userOpt.isPresent() && userOpt.get().getEmail().equals(email)) {
             return userOpt;
         }
