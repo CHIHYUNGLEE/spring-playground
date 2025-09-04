@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -11,6 +12,7 @@
         .login-box button { width:100%; padding:12px; margin-top:20px; border:none; border-radius:8px; background:linear-gradient(to right, #6a11cb, #2575fc); color:white; cursor:pointer;}
         .login-box .links { margin-top:15px; font-size:12px;}
         .login-box .links a { color:#2575fc; text-decoration:none;}
+        .error-msg { color:red; margin-top:15px; font-size:13px; }
     </style>
 </head>
 <body>
@@ -21,8 +23,14 @@
         <input type="password" name="password" placeholder="비밀번호" required>
         <button type="submit">로그인</button>
     </form>
+
+    <!-- 에러 메시지 빨간 글씨 -->
+    <c:if test="${not empty errorMsg}">
+        <div class="error-msg">${errorMsg}</div>
+    </c:if>
+
     <div class="links">
-        <a href="register">회원가입</a> | <a href="findPassword">비밀번호 찾기</a>
+        <a href="home">홈으로</a> | <a href="register">회원가입</a> | <a href="findPassword">비밀번호 찾기</a>
     </div>
 </div>
 </body>

@@ -87,7 +87,7 @@
             <button type="submit" class="btn">비밀번호 재설정 링크 보내기</button>
         </form>
         <div class="extra">
-            <a href="login">로그인으로 돌아가기</a>
+            <a href="home">홈</a> | <a href="login">로그인</a>
         </div>
     </div>
 </body>
