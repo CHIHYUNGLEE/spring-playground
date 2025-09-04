@@ -10,4 +10,4 @@ CREATE TABLE users (
 );
 
 --admin 계정 추가
-INSERT INTO users (user_id, user_name, password, email, role) VALUES ('이치형', 'admin', 'admin123', 'admin@example.com', 'ADMIN');
+INSERT INTO users (user_id, user_name, password, email, role) VALUES ('이치형', 'admin', '$2a$10$3qjhHUVTQ50qpz3LQZGSJuzLMUIbHUYgJ13RG6Gl6R91u2hN.I8A.', 'admin@example.com', 'ADMIN');
