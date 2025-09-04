@@ -22,15 +22,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // 로그인
-    public boolean login(String username, String rawPassword) {
-        Optional<User> userOpt = userRepository.findByUserId(username);
-        if (userOpt.isPresent()) {
-            return passwordEncoder.matches(rawPassword, userOpt.get().getPassword());
-        }
-        return false;
-    }
-
     // 비밀번호 찾기 (가입 이메일 확인)
     public Optional<User> findByUsernameAndEmail(String userId, String email) {
         Optional<User> userOpt = userRepository.findByUserId(userId);

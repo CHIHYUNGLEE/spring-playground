@@ -19,15 +19,14 @@
 <div class="login-box">
     <h2>로그인</h2>
     <form action="doLogin" method="post">
-        <input type="text" name="username" placeholder="아이디" required>
+        <input type="text" name="userId" placeholder="아이디" required>
         <input type="password" name="password" placeholder="비밀번호" required>
         <button type="submit">로그인</button>
     </form>
 
-    <!-- 에러 메시지 빨간 글씨 -->
-    <c:if test="${not empty errorMsg}">
-        <div class="error-msg">${errorMsg}</div>
-    </c:if>
+	<c:if test="${not empty param.error}">
+	    <p style="color:red;">아이디 또는 비밀번호가 틀렸습니다.</p>
+	</c:if>
 
 	<!-- 회원가입후 로그인 요청 -->
 	<c:if test="${not empty registerSuccessMsg}">
