@@ -9,6 +9,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.chihyunglee.springplayground.service.CustomUserDetailsService;
 
+import jakarta.servlet.DispatcherType;
+
 @Configuration
 public class SecurityConfig {
 
@@ -36,9 +38,11 @@ public class SecurityConfig {
         http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
+        	// FORWARD 타입의 디스패처 요청에 대해서는 모두 허용합니다.
+            .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll() 
             .requestMatchers("/", "/home", "/login", "/register", "/findPassword",
-                            "/css/**", "/js/**", "/images/**", "/doLogin").permitAll()
-            .anyRequest().permitAll() // 아직은 모든 요청 허용
+                            "/css/**", "/js/**", "/images/**", "/doLogin", "/error").permitAll()
+            .anyRequest().authenticated() // 아직은 모든 요청 허용
         )
         .formLogin(form -> form
             .loginPage("/login")
