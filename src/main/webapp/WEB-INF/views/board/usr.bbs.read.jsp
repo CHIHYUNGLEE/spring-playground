@@ -2,21 +2,71 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <title>${post.title}</title>
+    <meta charset="UTF-8">
+    <title>${post.title} - 게시글</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #333;
+            padding: 40px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .meta {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .btn-group {
+            margin-top: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 10px;
+            color: #fff;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            transition: 0.3s;
+        }
+        .btn:hover {
+            opacity: 0.85;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
     <h2>${post.title}</h2>
+    <p class="meta">
+        작성자: ${post.author.username} | 작성일: ${post.createdAt}
+    </p>
     <p>${post.content}</p>
-    <p>작성자: ${post.author.username}</p>
-    <p>작성일: ${post.createdAt}</p>
 
-    <sec:authorize access="hasRole('ADMIN') or principal.username == post.author.userId">
-        <a href="/board/edit/${post.id}">수정</a>
-        <a href="/board/delete/${post.id}">삭제</a>
-    </sec:authorize>
-
-    <a href="/board/list">목록</a>
+    <div class="btn-group">
+        <sec:authorize access="hasRole('ADMIN') or principal.username == post.author.userId">
+            <a class="btn" href="/board/edit/${post.id}">수정</a>
+            <a class="btn" href="/board/delete/${post.id}">삭제</a>
+        </sec:authorize>
+        <a class="btn" href="/board/list">목록으로</a>
+    </div>
+</div>
 </body>
 </html>

@@ -1,42 +1,113 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
+    <meta charset="UTF-8">
     <title>게시판 목록</title>
+    <style>
+        body { 
+            font-family:'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #667eea, #764ba2); 
+            color: #333; 
+            margin:0; 
+            padding:0; 
+        }
+        .container { 
+            width: 90%; 
+            max-width: 900px; 
+            margin: 50px auto; 
+            background: #fff; 
+            padding: 20px 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        h2 { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            color: #764ba2;
+        }
+        .post-card {
+            border: 1px solid #eee; 
+            border-radius: 10px; 
+            padding: 15px 20px; 
+            margin-bottom: 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            transition: box-shadow 0.3s;
+        }
+        .post-card:hover { 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+        }
+        .post-info { 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .post-title { 
+            font-size: 18px; 
+            font-weight: bold; 
+            color: #333; 
+            text-decoration: none;
+        }
+        .post-meta { 
+            font-size: 12px; 
+            color: #777; 
+            margin-top: 5px;
+        }
+        .btn-group a { 
+            text-decoration: none; 
+            background: #764ba2; 
+            color: white; 
+            padding: 8px 15px; 
+            border-radius: 8px; 
+            font-size: 13px; 
+            margin-left: 5px; 
+        }
+        .btn-group a:hover {
+            background: #6a11cb;
+        }
+        .new-post { 
+            display: block; 
+            width: 150px; 
+            margin: 20px auto; 
+            text-align: center; 
+            background: #2575fc; 
+            color: #fff; 
+            padding: 10px 0; 
+            border-radius: 10px; 
+            text-decoration: none; 
+            font-weight: bold;
+        }
+        .new-post:hover { 
+            background: #6a11cb; 
+        }
+    </style>
 </head>
 <body>
-<h2>게시판 목록</h2>
+<div class="container">
+    <h2>게시판 목록</h2>
 
-<table border="1">
-    <tr>
-        <th>번호</th>
-        <th>제목</th>
-        <th>작성자</th>
-        <th>작성일</th>
-        <th>액션</th>
-    </tr>
     <c:forEach var="post" items="${posts}">
-        <tr>
-            <td>${post.id}</td>
-            <td><a href="board/${post.id}">${post.title}</a></td>
-            <td>${post.author.username}</td>
-            <td>${post.createdAt}</td>
-            <td>
-                <!-- 본인 글이면 수정/삭제 가능 -->
+        <div class="post-card">
+            <div class="post-info">
+                <a class="post-title" href="board/${post.id}">${post.title}</a>
+                <span class="post-meta">작성자: ${post.author.userName} | 작성일: ${post.createdAt}</span>
+            </div>
+            <div class="btn-group">
                 <sec:authorize access="hasRole('ADMIN') or principal.username == post.author.userId">
                     <a href="board/edit/${post.id}">수정</a>
                     <a href="board/delete/${post.id}">삭제</a>
                 </sec:authorize>
-            </td>
-        </tr>
+            </div>
+        </div>
     </c:forEach>
-</table>
 
-<sec:authorize access="isAuthenticated()">
-    <a href="board/new">새 글 쓰기</a>
-</sec:authorize>
-
+    <sec:authorize access="isAuthenticated()">
+        <a class="new-post" href="/board/new">새 글 쓰기</a>
+    </sec:authorize>
+</div>
 </body>
 </html>
