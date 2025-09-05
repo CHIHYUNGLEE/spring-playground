@@ -13,7 +13,7 @@ import com.chihyunglee.springplayground.service.CustomUserDetailsService;
 public class SecurityConfig {
 
 	private final CustomUserDetailsService userDetailsService;
-	
+
     public SecurityConfig(CustomUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
@@ -30,13 +30,13 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-	
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/", "/home", "/login", "/register", "/findPassword", 
+            .requestMatchers("/", "/home", "/login", "/register", "/findPassword",
                             "/css/**", "/js/**", "/images/**", "/doLogin").permitAll()
             .anyRequest().permitAll() // 아직은 모든 요청 허용
         )
@@ -49,7 +49,7 @@ public class SecurityConfig {
             .failureUrl("/login?error=true")
             .permitAll()
         );
-    
+
         return http.build();
     }
 }

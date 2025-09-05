@@ -1,11 +1,13 @@
 package com.chihyunglee.springplayground.service;
 
-import com.chihyunglee.springplayground.model.User;
-import com.chihyunglee.springplayground.repository.UserRepository;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+
+import com.chihyunglee.springplayground.model.User;
+import com.chihyunglee.springplayground.repository.UserRepository;
 
 @Service
 public class UserService {

@@ -1,7 +1,7 @@
 package com.chihyunglee.springplayground.service;
 
-import com.chihyunglee.springplayground.model.User;
-import com.chihyunglee.springplayground.repository.UserRepository;
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import com.chihyunglee.springplayground.model.User;
+import com.chihyunglee.springplayground.repository.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
