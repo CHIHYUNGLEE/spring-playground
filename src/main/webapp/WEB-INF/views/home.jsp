@@ -24,7 +24,7 @@
     <div class="btn-group">
 	    <sec:authorize access="isAuthenticated()">
 	        <span class="welcome">안녕하세요, <sec:authentication property="name" />님</span>
-	        <a class="btn" href="board">게시판</a>
+	        <a class="btn" href="board/list">게시판</a>
 	        <a class="btn" href="logout">로그아웃</a>
 	    </sec:authorize>
 	
