@@ -9,5 +9,5 @@ CREATE TABLE users (
     role VARCHAR(20) DEFAULT 'USER'         -- 권한 (USER / ADMIN 등)
 );
 
---admin 계정 추가
+--admin 계정 추가 admin/admin123
 INSERT INTO users (user_id, user_name, password, email, role) VALUES ('이치형', 'admin', '$2a$10$cI9sFLwyD.AnCSDL.lsg1ue38/49ObKCrs/bT/1VjLjT/g./yTYTy', 'admin@example.com', 'ADMIN');
