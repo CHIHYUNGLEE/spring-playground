@@ -27,6 +27,11 @@
 	<c:if test="${not empty param.error}">
 	    <p style="color:red;">아이디 또는 비밀번호가 틀렸습니다.</p>
 	</c:if>
+	
+	<c:if test="${not empty param.withdraw}">
+	    <p style="color:red;">탈퇴한 사용자 입니다.</p>
+	</c:if>
+	
 
 	<!-- 회원가입후 로그인 요청 -->
 	<c:if test="${not empty registerSuccessMsg}">

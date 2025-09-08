@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.chihyunglee.springplayground.model.User;
 import com.chihyunglee.springplayground.repository.UserRepository;
+import com.chihyunglee.springplayground.security.CustomUserDetails;
+import com.chihyunglee.springplayground.security.exception.UserWithdrawnException;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -24,15 +26,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + userId));
-
+        
+        if(user.getStatus() == 9100) {
+            throw new UserWithdrawnException("탈퇴한 사용자입니다.");
+        }
         // 권한 처리 (ADMIN / USER)
         GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
 
-        // Spring Security UserDetails 객체 생성
-        return new org.springframework.security.core.userdetails.User(
-                user.getUserId(),
-                user.getPassword(),   // 암호화된 비밀번호
-                Collections.singleton(authority)
-        );
+        // Spring Security UserDetails 객체 생성 
+        return new CustomUserDetails( user.getUserId(), user.getPassword(), Collections.singleton(authority), user.getStatus() );
     }
 }

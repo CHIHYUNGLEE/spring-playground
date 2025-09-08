@@ -8,19 +8,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.chihyunglee.springplayground.security.handler.CustomAuthFailureHandler;
 import com.chihyunglee.springplayground.service.CustomUserDetailsService;
 
 import jakarta.servlet.DispatcherType;
 
 @Configuration
 public class SecurityConfig {
-
+	
 	private final CustomUserDetailsService userDetailsService;
+	private final CustomAuthFailureHandler customAuthFailureHandler;
 
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+    public SecurityConfig(CustomUserDetailsService userDetailsService, CustomAuthFailureHandler customAuthFailureHandler) {
         this.userDetailsService = userDetailsService;
+        this.customAuthFailureHandler = customAuthFailureHandler;
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -52,7 +54,7 @@ public class SecurityConfig {
             .usernameParameter("userId")
             .passwordParameter("password")
             .defaultSuccessUrl("/home", true)
-            .failureUrl("/login?error=true")
+            .failureHandler(customAuthFailureHandler) // 커스텀 핸들러 적용
             .permitAll()
         );
 
