@@ -23,7 +23,7 @@
         <form action="${pageContext.request.contextPath}/profile" method="post">
             <div class="input-group">
                 <label for="name">이름</label>
-                <input type="text" id="name" name="name" value="${user.userName}" required>
+                <input type="text" id="userName" name="userName" value="${user.userName}" required>
             </div>
             <div class="input-group">
                 <label for="email">이메일</label>
