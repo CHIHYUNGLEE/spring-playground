@@ -4,6 +4,12 @@ server:
     whitelabel:
       enabled: false   # 기본 Whitelabel Error Page 비활성화
     path: /error       # 에러 시 보여줄 경로
+logging:
+  file:
+    name: logs/spring-boot.log
+  level:
+    root: INFO
+    com.chihyunglee: DEBUG
 spring:
   mvc:
     view:
@@ -20,7 +26,6 @@ spring:
           auth: true
           starttls:
             enable: true  
-
   datasource:
     url: jdbc:mysql://localhost:3306/mydb   # DB URL
     username: myuser                        # DB 계정
