@@ -26,13 +26,49 @@
             border: 1px solid #ccc; border-radius: 6px;
         }
         textarea { resize: vertical; height: 200px; }
-        .btn {
+        
+		/* 버튼 공통 스타일 */
+		.btn {
+		    display: inline-flex;             /* inline-flex로 맞춤 */
+		    align-items: center;
+		    justify-content: center;
+		    width: 120px;                     /* 너비 고정 */
+		    height: 45px;                     /* 높이 고정 */
+		    padding: 0;                        /* padding 제거, width/height에 맞춤 */
+		    border-radius: 6px;
+		    font-weight: bold;
+		    font-size: 1em;
+		    text-decoration: none;            /* a태그도 버튼처럼 */
+		    box-sizing: border-box;           /* 테두리 포함 크기 계산 */
+		    cursor: pointer;
+		    margin-right: 10px;
+		}
+
+        /* 등록하기 버튼 스타일 */
+        .btn-submit {
             background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #fff; padding: 10px 25px;
-            border: none; border-radius: 6px;
-            cursor: pointer; font-weight: bold;
+            color: #fff;
+            border: none;
         }
-        .btn:hover { opacity: 0.9; }
+        .btn-submit:hover { opacity: 0.9; }
+
+        /* 취소 버튼 스타일 */
+        .btn-cancel {
+            background: #fff;
+            color: #000;
+            border: 3px solid #764ba2;
+            text-decoration: none;
+        }
+        .btn-cancel:hover {
+            background: #f0f0f0;
+        }
+
+        /* 버튼 그룹 */
+        .button-group {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -47,7 +83,10 @@
             <label for="content">내용</label>
             <textarea id="content" name="content" required></textarea>
         </div>
-        <button type="submit" class="btn">등록하기</button>
+        <div class="button-group">
+            <button type="submit" class="btn btn-submit">등록하기</button>
+            <a href="list" class="btn btn-cancel">취소</a>
+        </div>
     </form>
 </div>
 </body>

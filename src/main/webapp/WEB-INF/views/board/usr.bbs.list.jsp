@@ -69,7 +69,7 @@
         .btn-group a:hover {
             background: #6a11cb;
         }
-        .new-post { 
+        .new-post, .btn_home { 
             display: block; 
             width: 150px; 
             margin: 20px auto; 
@@ -81,7 +81,7 @@
             text-decoration: none; 
             font-weight: bold;
         }
-        .new-post:hover { 
+        .new-post:hover .btn_home:hover { 
             background: #6a11cb; 
         }
     </style>
@@ -97,7 +97,7 @@
                 <span class="post-meta">작성자: ${post.author.userName} | 작성일: ${post.createdAt}</span>
             </div>
             <div class="btn-group">
-                <sec:authorize access="hasRole('ADMIN') or principal.username == post.author.userId">
+                <sec:authorize access="hasRole('ADMIN') or principal.userName == post.author.userId">
                     <a href="board/edit/${post.id}">수정</a>
                     <a href="board/delete/${post.id}">삭제</a>
                 </sec:authorize>
@@ -108,6 +108,7 @@
     <sec:authorize access="isAuthenticated()">
         <a class="new-post" href="/board/new">새 글 쓰기</a>
     </sec:authorize>
+    <a href="home" class="btn btn_home">홈으로</a>
 </div>
 </body>
 </html>
