@@ -34,16 +34,22 @@ public class UserService {
         return Optional.empty();
     }
     
-    // 사용자 정보 조회
-    public User findByUsername(String username) {
-        return userRepository.findByUserName(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username + " 사용자를 찾을 수 없습니다."));
+    // 사용자 정보 조회(아이디)
+    public User findByUserId(String userId) {
+        return userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException(userId + " 사용자를 찾을 수 없습니다."));
     }
 
+    // 사용자 정보 조회(이름)
+//    public User findByUsername(String username) {
+//        return userRepository.findByUserName(username)
+//                .orElseThrow(() -> new UsernameNotFoundException(username + " 사용자를 찾을 수 없습니다."));
+//    }
+
     // 사용자 정보 업데이트
-    public void updateUser(String username, User userForm) {
-        User user = userRepository.findByUserName(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username + " 사용자를 찾을 수 없습니다."));
+    public void updateUser(String userId, User userForm) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException(userId + " 사용자를 찾을 수 없습니다."));
 
         user.setUserName(userForm.getUserName());
         user.setEmail(userForm.getEmail());

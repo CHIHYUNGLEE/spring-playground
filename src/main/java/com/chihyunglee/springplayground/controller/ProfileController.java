@@ -24,11 +24,12 @@ public class ProfileController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public String showProfileForm(Model model, Principal principal) {
+    	
         // 로그인한 사용자 아이디 가져오기
-        String username = principal.getName();
-
+        String userId = principal.getName();
+        
         // DB에서 사용자 정보 가져오기
-        User user = userService.findByUsername(username);
+        User user = userService.findByUserId(userId);
         model.addAttribute("user", user);
 
         return "profileForm"; // JSP 뷰
@@ -38,9 +39,9 @@ public class ProfileController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/profile")
     public String updateProfile(@ModelAttribute User userForm, Principal principal, RedirectAttributes redirectAttributes) {
-        String username = principal.getName();
+    	String userId = principal.getName();
 
-        userService.updateUser(username, userForm);
+        userService.updateUser(userId, userForm);
 
         redirectAttributes.addFlashAttribute("message", "회원정보가 수정되었어요 💕");
         return "redirect:/profile";
