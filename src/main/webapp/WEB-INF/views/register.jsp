@@ -84,6 +84,9 @@
             <div class="input-group">
                 <label for="username">아이디</label>
                 <input type="text" id="userId" name="userId" required>
+			    <c:if test="${not empty userIdExistsError}">
+			        <div style="color:red; font-size:12px;">${userIdExistsError}</div>
+			    </c:if>
             </div>
             <div class="input-group">
                 <label for="password">비밀번호</label>
@@ -92,8 +95,11 @@
             <div class="input-group">
                 <label for="email">이메일</label>
                 <input type="email" id="email" name="email" required>
-                <c:if test="${not empty emailError}">
-			        <div style="color:red; font-size:12px;">${emailError}</div>
+                <c:if test="${not empty emailRegularError}">
+        			<div style="color:red; font-size:12px;">${emailRegularError}</div>
+    			</c:if>
+    			<c:if test="${not empty emailExistsError}">
+			        <div style="color:red; font-size:12px;">${emailExistsError}</div>
 			    </c:if>
             </div>
             <button type="submit" class="btn">가입하기</button>

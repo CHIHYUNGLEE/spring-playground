@@ -9,13 +9,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.chihyunglee.springplayground.model.User;
+import com.chihyunglee.springplayground.repository.UserRepository;
 import com.chihyunglee.springplayground.service.UserService;
 
 @Controller
 public class HomeController {
 
     @Autowired
-    private UserService userService; // ✅ 인스턴스 주입
+    private UserService userService; // 인스턴스 주입
+    
+    @Autowired
+    private UserRepository userRepository; // 인스턴스 주입
 
     @GetMapping("/")
     public String root() {
@@ -57,9 +61,26 @@ public class HomeController {
                              Model model,
                              RedirectAttributes redirectAttributes) {
 
+        boolean userIdExists = userRepository.existsByUserId(userId);
+        boolean emailExists = userRepository.existsByEmail(email);
+
+        if (userIdExists) {
+            model.addAttribute("userIdExistsError", "이미 사용 중인 아이디입니다.");
+        }
+        if (emailExists) {
+            model.addAttribute("emailExistsError", "이미 사용 중인 이메일입니다.");
+        }
+    	
+        if (userIdExists || emailExists) {
+            // 입력값 유지
+            model.addAttribute("userId", userId);
+            model.addAttribute("email", email);
+            return "register"; // 다시 회원가입 페이지
+        }
+        
         // 이메일 유효성 체크
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            model.addAttribute("emailError", "유효하지 않은 이메일 형식입니다.");
+            model.addAttribute("emailRegularError", "유효하지 않은 이메일 형식입니다.");
             return "register"; // register.jsp로 돌아감
         }
 
