@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +60,7 @@ public class PasswordController {
     }
 
     //비밀번호 변경 폼
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/resetPassword")
     public String showResetForm(@RequestParam String token, Model model) {
         Optional<User> userOpt = userRepository.findByResetToken(token);
