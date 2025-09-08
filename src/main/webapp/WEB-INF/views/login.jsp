@@ -33,6 +33,11 @@
 	    <script>alert('${registerSuccessMsg}');</script>
 	</c:if>
 	
+	<!-- 회원틸퇴후 로그인창 이동 -->
+	<c:if test="${not empty withdrawMsg}">
+	    <script>alert('${withdrawMsg}');</script>
+	</c:if>
+	
     <div class="links">
         <a href="home">홈으로</a> | <a href="register">회원가입</a> | <a href="findPassword">비밀번호 찾기</a>
     </div>

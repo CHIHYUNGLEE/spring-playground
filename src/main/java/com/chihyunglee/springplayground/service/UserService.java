@@ -56,4 +56,24 @@ public class UserService {
 
         userRepository.save(user);
     }
+    
+    
+    // 회원 탈퇴
+    public void withdrawUser(String userId) {
+        User user = userRepository.findByUserId(userId)
+                                  .orElseThrow(() -> new UsernameNotFoundException(userId + " 사용자를 찾을 수 없습니다."));
+        user.setStatus(9100); // 탈퇴 상태로만 업데이트
+        userRepository.save(user);
+    }
+    
+    // 회원 폐기(관리자만 가능)
+    public void deleteUserPermanently(String userId) {
+        User user = userRepository.findByUserId(userId)
+                                  .orElseThrow(() -> new RuntimeException("User not found"));
+        if (user.getStatus() == 9100) { // 탈퇴 상태인 경우만 물리 삭제 허용
+            userRepository.delete(user);
+        } else {
+            throw new IllegalStateException("정상 회원은 삭제할 수 없습니다.");
+        }
+    }
 }

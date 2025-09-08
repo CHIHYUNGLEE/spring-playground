@@ -46,5 +46,22 @@ public class ProfileController {
         redirectAttributes.addFlashAttribute("updateMsg", "회원정보가 수정되었어요!");
         return "redirect:/home";
     }
+    
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/withdrawAccount")
+    public String deleteAccount(Principal principal, RedirectAttributes redirectAttributes) {
+        String userId = principal.getName();
+        userService.withdrawUser(userId);
+        redirectAttributes.addFlashAttribute("withdrawMsg", "회원 탈퇴 처리가 완료되었습니다.");
+        return "redirect:/login";
+    }
+    
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @PostMapping("/admin/deleteUser")
+//    public String deleteUser(@RequestParam String userId, RedirectAttributes redirectAttributes) {
+//        userService.deleteUserPermanently(userId);
+//        redirectAttributes.addFlashAttribute("msg", "회원이 DB에서 완전히 삭제되었습니다.");
+//        return "redirect:/admin/userList";
+//    }
 }
 
