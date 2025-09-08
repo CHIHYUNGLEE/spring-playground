@@ -46,7 +46,10 @@
                 <label for="email">이메일</label>
                 <input type="email" id="email" name="email" value="${user.email}" required>
             </div>
-            <button type="submit" class="btn">변경하기</button>
+		    <div style="display: flex; gap: 10px; margin-top: 10px;">
+		        <button type="submit" class="btn" style="flex:1;">변경하기</button>
+		        <a href="${pageContext.request.contextPath}/home" class="btn" style="flex:1; text-align:center; text-decoration:none; display:flex; justify-content:center; align-items:center;">홈으로</a>
+		    </div>
         </form>
         
         <!-- 회원 탈퇴 -->
