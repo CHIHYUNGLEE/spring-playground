@@ -33,7 +33,7 @@ public class PasswordController {
                                 @RequestParam String email,
                                 Model model) {
 
-        Optional<User> userOpt = userRepository.findByUsernameAndEmail(username, email);
+        Optional<User> userOpt = userRepository.findByUserNameAndEmail(username, email);
 
         if (userOpt.isEmpty()) {
             model.addAttribute("error", "아이디와 이메일이 일치하지 않습니다.");
