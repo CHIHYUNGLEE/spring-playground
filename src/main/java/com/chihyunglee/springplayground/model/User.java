@@ -44,4 +44,7 @@ public class User {
     //비번 변경용 토큰 및 토큰 만료
     private String resetToken;
     private LocalDateTime resetTokenExpiry;
+    
+    //상태값
+    private int status;
 }
