@@ -13,9 +13,16 @@
         .btn { background:white; color:#764ba2; padding:12px 30px; border-radius:30px; text-decoration:none; font-weight:bold; margin:0 10px;}
         .welcome { font-size: 25px; }
     </style>
+    <script>
+	    var msg = '${updateMsg}';
+	    if (msg) {
+	        alert(msg);
+	    }
+	</script>
 </head>
 <body>
 <div class="container">
+	
     <h1>Welcome to Spring Playground 🌸</h1>
     <p>포트폴리오 프로젝트에 오신 걸 환영합니다.
 	    <sec:authorize access="!isAuthenticated()">
@@ -23,11 +30,6 @@
 	    </sec:authorize>
     </p>
     <div class="btn-group">
-    
-    	<!-- 회원정보 변경후 alert -->
-		<c:if test="${not empty updateMsg}">
-		    <script>alert('${updateMsg}');</script>
-		</c:if>
 		
 	    <sec:authorize access="isAuthenticated()">
 	        <span class="welcome">안녕하세요, <sec:authentication property="name" />님</span>
