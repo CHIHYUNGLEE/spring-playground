@@ -37,9 +37,11 @@ public class User {
 
     private String role = "USER";
 
+    //회원가입일자 및 정보 수정일자
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
     
+    //비번 변경용 토큰 및 토큰 만료
     private String resetToken;
     private LocalDateTime resetTokenExpiry;
 }
