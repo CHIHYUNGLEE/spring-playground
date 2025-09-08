@@ -28,6 +28,7 @@ public class PasswordController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
+    // 회원정보 비교 및 비번 리셋 링크 전송
     @PostMapping("/findPassword")
     public String sendResetLink(@RequestParam String username,
                                 @RequestParam String email,
@@ -57,6 +58,7 @@ public class PasswordController {
         return "findPassword";
     }
 
+    //비밀번호 변경 폼
     @GetMapping("/resetPassword")
     public String showResetForm(@RequestParam String token, Model model) {
         Optional<User> userOpt = userRepository.findByResetToken(token);
@@ -70,6 +72,7 @@ public class PasswordController {
         return "resetPasswordForm";
     }
 
+    //비밀번호 변경 호출
     @PostMapping("/resetPassword")
     public String resetPassword(@RequestParam String token,
                                 @RequestParam String newPassword,

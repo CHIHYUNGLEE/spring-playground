@@ -3,6 +3,7 @@ package com.chihyunglee.springplayground.controller;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ public class ProfileController {
     private UserService userService;
 
     // 회원정보 수정 폼 열기
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public String showProfileForm(Model model, Principal principal) {
         // 로그인한 사용자 아이디 가져오기
@@ -33,6 +35,7 @@ public class ProfileController {
     }
 
     // 회원정보 수정 처리
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/profile")
     public String updateProfile(@ModelAttribute User userForm, Principal principal, RedirectAttributes redirectAttributes) {
         String username = principal.getName();

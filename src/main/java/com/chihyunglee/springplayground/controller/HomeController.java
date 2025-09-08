@@ -22,12 +22,14 @@ public class HomeController {
         return "home"; // 별도의 랜딩 페이지
     }
 
+    //홈화면
     @GetMapping("/home")
     public String home() {
     	System.out.println("home controller called");
         return "home"; // 로그인 후 접근하는 홈
     }
 
+    //로그인 화면
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
             org.springframework.ui.Model model) {
@@ -40,6 +42,7 @@ public class HomeController {
 		return "login"; // login.jsp로 이동
     }
 
+    //회원가입
     @GetMapping("/register")
     public String register() {
         return "register";
@@ -74,6 +77,7 @@ public class HomeController {
         return "login"; // 가입 후 로그인 페이지로 이동
     }
 
+    //비번변경 페이지
     @GetMapping("/findPassword")
     public String findPassword() {
         return "findPassword";
