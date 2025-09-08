@@ -32,11 +32,11 @@
             <button type="submit" class="btn">변경하기</button>
         </form>
 
-        <div class="message">
+<%--         <div class="message">
             <c:if test="${not empty message}">
                 <p>${message}</p>
             </c:if>
-        </div>
+        </div> --%>
     </div>
 </body>
 </html>
