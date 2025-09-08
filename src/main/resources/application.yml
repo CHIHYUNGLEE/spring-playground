@@ -9,6 +9,17 @@ spring:
     view:
       prefix: /WEB-INF/views/   # JSP 등 뷰 파일 위치
       suffix: .jsp              # 뷰 파일 확장자
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: eno7135@gmail.com
+    password: vnzbrqsjlirrtyaj   # 구글 앱 비밀번호
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true  
 
   datasource:
     url: jdbc:mysql://localhost:3306/mydb   # DB URL
