@@ -26,7 +26,7 @@
 	    <sec:authorize access="isAuthenticated()">
 	        <span class="welcome">안녕하세요, <sec:authentication property="name" />님</span>
 	        <a class="btn" href="board/list">게시판</a>
-	        <a class="btn" href="profile">회원정보 변경</a>
+	        <a class="btn" href="${pageContext.request.contextPath}/profile">회원정보 변경</a>
 	        <a class="btn" href="logout">로그아웃</a>
 	    </sec:authorize>
 	
