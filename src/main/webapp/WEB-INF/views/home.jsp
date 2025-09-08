@@ -9,6 +9,7 @@
     <style>
         body { font-family:'Poppins', sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; background:linear-gradient(135deg, #667eea, #764ba2); color:#fff;}
         .container { text-align:center;}
+        .btn-group {margin:30px;}
         .btn { background:white; color:#764ba2; padding:12px 30px; border-radius:30px; text-decoration:none; font-weight:bold; margin:0 10px;}
         .welcome { font-size: 25px; }
     </style>
