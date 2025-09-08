@@ -3,6 +3,7 @@ package com.chihyunglee.springplayground.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +32,22 @@ public class UserService {
             return userOpt;
         }
         return Optional.empty();
+    }
+    
+    // 사용자 정보 조회
+    public User findByUsername(String username) {
+        return userRepository.findByUserName(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username + " 사용자를 찾을 수 없습니다."));
+    }
+
+    // 사용자 정보 업데이트
+    public void updateUser(String username, User userForm) {
+        User user = userRepository.findByUserName(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username + " 사용자를 찾을 수 없습니다."));
+
+        user.setUserName(userForm.getUserName());
+        user.setEmail(userForm.getEmail());
+
+        userRepository.save(user);
     }
 }
