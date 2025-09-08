@@ -43,8 +43,8 @@ public class ProfileController {
 
         userService.updateUser(userId, userForm);
 
-        redirectAttributes.addFlashAttribute("message", "회원정보가 수정되었어요 💕");
-        return "redirect:/profile";
+        redirectAttributes.addFlashAttribute("updateMsg", "회원정보가 수정되었어요!");
+        return "redirect:/home";
     }
 }
 

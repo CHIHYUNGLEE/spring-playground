@@ -23,6 +23,12 @@
 	    </sec:authorize>
     </p>
     <div class="btn-group">
+    
+    	<!-- 회원정보 변경후 alert -->
+		<c:if test="${not empty updateMsg}">
+		    <script>alert('${updateMsg}');</script>
+		</c:if>
+		
 	    <sec:authorize access="isAuthenticated()">
 	        <span class="welcome">안녕하세요, <sec:authentication property="name" />님</span>
 	        <a class="btn" href="board/list">게시판</a>
