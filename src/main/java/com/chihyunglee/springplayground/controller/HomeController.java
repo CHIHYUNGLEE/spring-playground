@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.chihyunglee.springplayground.model.User;
 import com.chihyunglee.springplayground.service.UserService;
@@ -53,7 +54,8 @@ public class HomeController {
     						 @RequestParam String userName,
                              @RequestParam String password,
                              @RequestParam String email,
-                             Model model) {
+                             Model model,
+                             RedirectAttributes redirectAttributes) {
 
         // 이메일 유효성 체크
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
@@ -72,9 +74,9 @@ public class HomeController {
         userService.register(user);
 
         // 성공 메시지
-        model.addAttribute("registerSuccessMsg", "회원가입 성공! 로그인 해주세요.");
+        redirectAttributes.addFlashAttribute("registerSuccessMsg", "회원가입 성공! 로그인 해주세요.");
 
-        return "login"; // 가입 후 로그인 페이지로 이동
+        return "redirect:/login"; // 가입 후 로그인 페이지로 이동
     }
 
     //비번변경 페이지
