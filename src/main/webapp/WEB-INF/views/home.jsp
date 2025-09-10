@@ -54,17 +54,17 @@
 		
 	    <sec:authorize access="isAuthenticated()">
 	        <span class="welcome">안녕하세요, <sec:authentication property="name" />님</span>
-	        <a class="btn btn_board" href="board/list">게시판</a>
-	        <a class="btn btn_profile" href="${pageContext.request.contextPath}/profile">회원정보 변경</a>
+	        <a class="btn_board btn" href="board/list">게시판</a>
+	        <a class="btn_profile btn" href="${pageContext.request.contextPath}/profile">회원정보 변경</a>
 	        <a class="btn_logout btn" href="logout">로그아웃</a>
 	    </sec:authorize>
 	
 	    <sec:authorize access="!isAuthenticated()">
-	        <a class="btn" href="login">로그인</a>
-	        <a class="btn" href="register">회원가입</a>
+	        <a class="btn_login btn" href="login">로그인</a>
+	        <a class="btn_register btn" href="register">회원가입</a>
 	    </sec:authorize>
    		<sec:authorize access="hasRole('ADMIN')">
-		    <a href="/user/list">회원관리</a>
+		    <a class="btn_userlist btn" href="/user/list">회원관리</a>
 		</sec:authorize>
     </div>
 </div>
