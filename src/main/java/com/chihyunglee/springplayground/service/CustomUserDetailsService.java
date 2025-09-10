@@ -1,10 +1,6 @@
 package com.chihyunglee.springplayground.service;
 
-import java.util.Collections;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,10 +26,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         if(user.getStatus() == 9100) {
             throw new UserWithdrawnException("탈퇴한 사용자입니다.");
         }
-        // 권한 처리 (ADMIN / USER)
-        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
 
         // Spring Security UserDetails 객체 생성 
-        return new CustomUserDetails( user.getUserId(), user.getPassword(), Collections.singleton(authority), user.getStatus() );
+        return new CustomUserDetails(user);
     }
 }
