@@ -181,6 +181,11 @@
 		    <input type="hidden" name="postId" value="${post.id}">
 		    <textarea name="content" class="form-control mb-2" placeholder="댓글을 입력하세요"></textarea>
 		    <button type="submit" class="btn btn-primary btn-sm">댓글 등록</button>
+   			<c:if test="${not empty errorReplyMessage}">
+			    <div style="color:red; margin-bottom:10px;">
+			        ${errorReplyMessage}
+			    </div>
+			</c:if>
 		</form>
 			
 		<!-- 댓글 목록 -->
@@ -203,6 +208,11 @@
 			            <input type="hidden" name="parentId" value="${comment.id}">
 			            <textarea name="content" class="form-control mb-1" placeholder="대댓글 작성"></textarea>
 			            <button type="submit" class="btn btn-sm btn-secondary">답글</button>
+			            <c:if test="${not empty errorReReplyMessage}">
+						    <div style="color:red; margin-bottom:10px;">
+						        ${errorReReplyMessage}
+						    </div>
+						</c:if>
 			        </form>
 			
 			        <!-- 대댓글 표시 -->
@@ -210,6 +220,13 @@
 			            <div class="reply" id="reply-${reply.id}">
 			                <b>${reply.user.userName}</b> | ${reply.createdAt}<br>
 			                ${reply.content}
+			                <!-- 대대댓글 작성 -->
+					        <form action="/comments/add" method="post">
+					            <input type="hidden" name="postId" value="${post.id}">
+					            <input type="hidden" name="parentId" value="${reply.id}">
+					            <textarea name="content"></textarea>
+					            <button type="submit">답글</button>
+					        </form>
 			            </div>
 			        </c:forEach>
 			    </div>
