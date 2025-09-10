@@ -19,6 +19,9 @@ import lombok.Setter;
 @Table(name = "users")
 public class User {
 
+	public static final int STATUS_NORMAL = 0;    // 정상 상태
+    public static final int STATUS_WITHDRAW = 9100;  // 탈퇴 상태
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
