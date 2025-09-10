@@ -114,7 +114,7 @@
     <sec:authorize access="isAuthenticated()">
         <a class="new-post" href="/board/new">새 글 쓰기</a>
     </sec:authorize>
-    <a href="home" class="btn btn_home">홈으로</a>
+    <a href="/home" class="btn btn_home">홈으로</a>
 </div>
 </body>
 </html>
