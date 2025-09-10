@@ -94,7 +94,7 @@
     <c:forEach var="post" items="${posts}">
         <div class="post-card">
             <div class="post-info">
-                <a class="post-title" href="board/${post.id}">${post.title}</a>
+                <a class="post-title" href="/board/${post.id}">${post.title}</a>
                 <span class="post-meta">작성자: ${post.author.userName} | 작성일: ${post.createdAt}</span>
             </div>
             <div class="btn-group">
