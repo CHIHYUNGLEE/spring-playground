@@ -76,11 +76,19 @@ public class UserService {
         userRepository.save(user);
     }
     
+    // 회원 복귀(관리자용)
+    public void registerUserByAdmin(Long id) {
+        User user = userRepository.findById(id)
+                                  .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        user.setStatus(User.STATUS_NORMAL); // 탈퇴 상태로만 업데이트
+        userRepository.save(user);
+    }
+    
     // 회원 탈퇴(관리자용)
     public void withdrawUserByAdmin(Long id) {
         User user = userRepository.findById(id)
                                   .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
-        user.setStatus(9100); // 탈퇴 상태로만 업데이트
+        user.setStatus(User.STATUS_WITHDRAW); // 탈퇴 상태로만 업데이트
         userRepository.save(user);
     }
     
@@ -88,7 +96,7 @@ public class UserService {
     public void deleteUserPermanently(Long id) {
         User user = userRepository.findById(id)
                                   .orElseThrow(() -> new RuntimeException("User not found"));
-        if (user.getStatus() == 9100) { // 탈퇴 상태인 경우만 물리 삭제 허용
+        if (user.getStatus() == User.STATUS_WITHDRAW) { // 탈퇴 상태인 경우만 물리 삭제 허용
             userRepository.delete(user);
         } else {
             throw new IllegalStateException("정상 회원은 삭제할 수 없습니다.");

@@ -43,6 +43,13 @@ public class UserController {
         return "user/userList"; // JSP 뷰
     }
 
+    // 회원 복귀 (status 업데이트)
+    @PostMapping("/activate/{id}")
+    public String activate(@PathVariable Long id) {
+        userService.registerUserByAdmin(id); // status = 0 처리
+        return "redirect:/user/list?status=ALL";
+    }
+    
     // 회원 탈퇴 (status 업데이트)
     @PostMapping("/deactivate/{id}")
     public String deactivate(@PathVariable Long id) {
