@@ -1,6 +1,7 @@
 package com.chihyunglee.springplayground.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/add")
     public String addComment(@RequestParam Long postId,
                              @RequestParam(required = false) Long parentId,
@@ -28,10 +30,11 @@ public class CommentController {
         return "redirect:/board/" + postId;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/delete/{id}")
     public String deleteComment(@PathVariable Long id,
                                 @AuthenticationPrincipal CustomUserDetails currentUser) {
-        commentService.deleteComment(id, currentUser.getUser());
+        commentService.deleteComment(id, currentUser);
         return "redirect:/board/" + id;
     }
 }
