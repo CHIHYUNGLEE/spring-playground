@@ -33,19 +33,14 @@
             font-size: 14px;
             margin-bottom: 20px;
         }
-        .btn-group {
-            margin-top: 20px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-right: 10px;
-            color: #fff;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            transition: 0.3s;
+        .btn-group a { 
+            text-decoration: none; 
+            background: #764ba2; 
+            color: white; 
+            padding: 8px 15px; 
+            border-radius: 8px; 
+            font-size: 13px; 
+            margin-top: 20px; 
         }
         .btn:hover {
             opacity: 0.85;
