@@ -2,6 +2,7 @@
 <%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -97,10 +98,15 @@
                 <span class="post-meta">작성자: ${post.author.userName} | 작성일: ${post.createdAt}</span>
             </div>
             <div class="btn-group">
-                <sec:authorize access="hasRole('ADMIN') or principal.userName == post.author.userId">
-                    <a href="board/edit/${post.id}">수정</a>
-                    <a href="board/delete/${post.id}">삭제</a>
-                </sec:authorize>
+				<%-- 
+				  SpEL을 사용하여 두 조건을 'or'로 연결합니다.
+				  1. hasRole('ADMIN'): 현재 사용자가 ADMIN 권한을 가졌는지 확인
+				  2. authentication.principal.user.userId == post.author.userId: 현재 로그인된 사용자(principal)의 ID와 게시글 작성자의 ID가 같은지 확인
+				--%>
+				<sec:authorize access="hasRole('ADMIN') or authentication.principal.user.userId == '${post.author.userId}'">
+				    <a href="/board/edit/${post.id}">수정</a>
+				    <a href="/board/delete/${post.id}">삭제</a>
+				</sec:authorize>
             </div>
         </div>
     </c:forEach>

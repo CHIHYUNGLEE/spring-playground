@@ -1,5 +1,7 @@
 package com.chihyunglee.springplayground.controller;
 
+import java.security.Principal;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.chihyunglee.springplayground.model.BoardPost;
 import com.chihyunglee.springplayground.model.User;
+import com.chihyunglee.springplayground.security.CustomUserDetails;
 import com.chihyunglee.springplayground.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +29,7 @@ public class BoardController {
     // 게시판 목록
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(Model model, Principal principal) {
         model.addAttribute("posts", boardService.findAll());
         return "board/usr.bbs.list"; // list.jsp
     }
@@ -46,17 +49,17 @@ public class BoardController {
     @GetMapping("/new")
     public String newForm(Model model) {
         model.addAttribute("post", new BoardPost());
-        return "board/usr.bbs.write"; // new.jsp
+        return "board/usr.bbs.write";
     }
 
     // 새 글 저장
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/save")
     public String create(@ModelAttribute BoardPost post,
-                         @AuthenticationPrincipal User currentUser) {
-        post.setAuthor(currentUser);
+                         @AuthenticationPrincipal CustomUserDetails currentUser) {
+        post.setAuthor(currentUser.getUser());
         boardService.save(post);
-        return "redirect:/board/usr.bbs.list";
+        return "redirect:/board/list";
     }
 
     // 수정 폼
