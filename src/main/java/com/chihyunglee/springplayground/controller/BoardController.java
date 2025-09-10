@@ -77,17 +77,17 @@ public class BoardController {
     @PostMapping("/update/{id}")
     public String update(@PathVariable Long id,
                          @ModelAttribute BoardPost updatedPost,
-                         @AuthenticationPrincipal User currentUser) {
-        boardService.update(id, updatedPost, currentUser);
-        return "redirect:/board/usr.bbs.list";
+                         @AuthenticationPrincipal CustomUserDetails currentUser) {
+        boardService.update(id, updatedPost, currentUser.getUser());
+        return "redirect:/board/list";
     }
 
     // 삭제
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id,
-                         @AuthenticationPrincipal User currentUser) {
-        boardService.delete(id, currentUser);
-        return "redirect:/board/usr.bbs.list";
+                         @AuthenticationPrincipal CustomUserDetails currentUser) {
+        boardService.delete(id, currentUser.getUser());
+        return "redirect:/board/list";
     }
 }
