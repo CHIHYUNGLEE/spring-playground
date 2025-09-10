@@ -105,7 +105,7 @@
 				--%>
 				<sec:authorize access="hasRole('ADMIN') or authentication.principal.user.userId == '${post.author.userId}'">
 				    <a href="/board/edit/${post.id}">수정</a>
-				    <a href="/board/delete/${post.id}">삭제</a>
+				    <a href="/board/delete/${post.id}" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
 				</sec:authorize>
             </div>
         </div>
