@@ -31,9 +31,9 @@ public class UserController {
     public String list(@RequestParam(defaultValue = "ALL") String status, Model model) {
         List<User> users;
         if ("ACTIVE".equalsIgnoreCase(status)) {
-            users = userService.findByStatus(1); // 정상
+            users = userService.findByStatus(User.STATUS_NORMAL); // 정상
         } else if ("INACTIVE".equalsIgnoreCase(status)) {
-            users = userService.findByStatus(0); // 탈퇴
+            users = userService.findByStatus(User.STATUS_WITHDRAW); // 탈퇴
         } else {
             users = userService.findAll();
         }
