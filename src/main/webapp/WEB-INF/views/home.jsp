@@ -42,6 +42,9 @@
 	        <a class="btn" href="login">로그인</a>
 	        <a class="btn" href="register">회원가입</a>
 	    </sec:authorize>
+   		<sec:authorize access="hasRole('ADMIN')">
+		    <a href="/user/list">회원관리</a>
+		</sec:authorize>
     </div>
 </div>
 </body>

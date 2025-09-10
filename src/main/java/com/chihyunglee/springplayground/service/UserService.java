@@ -1,5 +1,6 @@
 package com.chihyunglee.springplayground.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,11 @@ public class UserService {
         return Optional.empty();
     }
     
+    //모든회원 조회
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+    
     // 사용자 정보 조회(아이디)
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId)
@@ -57,6 +63,10 @@ public class UserService {
         userRepository.save(user);
     }
     
+    // 상태값으로 찾는 회원목록
+    public List<User> findByStatus(int status) {
+        return userRepository.findByStatus(status);
+    }
     
     // 회원 탈퇴
     public void withdrawUser(String userId) {
@@ -66,9 +76,17 @@ public class UserService {
         userRepository.save(user);
     }
     
+    // 회원 탈퇴(관리자용)
+    public void withdrawUserByAdmin(Long id) {
+        User user = userRepository.findById(id)
+                                  .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        user.setStatus(9100); // 탈퇴 상태로만 업데이트
+        userRepository.save(user);
+    }
+    
     // 회원 폐기(관리자만 가능)
-    public void deleteUserPermanently(String userId) {
-        User user = userRepository.findByUserId(userId)
+    public void deleteUserPermanently(Long id) {
+        User user = userRepository.findById(id)
                                   .orElseThrow(() -> new RuntimeException("User not found"));
         if (user.getStatus() == 9100) { // 탈퇴 상태인 경우만 물리 삭제 허용
             userRepository.delete(user);
