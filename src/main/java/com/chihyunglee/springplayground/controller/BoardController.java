@@ -1,6 +1,7 @@
 package com.chihyunglee.springplayground.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,9 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.chihyunglee.springplayground.model.BoardPost;
-import com.chihyunglee.springplayground.model.User;
+import com.chihyunglee.springplayground.model.Comment;
 import com.chihyunglee.springplayground.security.CustomUserDetails;
 import com.chihyunglee.springplayground.service.BoardService;
+import com.chihyunglee.springplayground.service.CommentService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardController {
 
     private final BoardService boardService;
+    private final CommentService commentService;
 
     // 게시판 목록
     @PreAuthorize("isAuthenticated()")
@@ -40,7 +43,14 @@ public class BoardController {
     public String read(@PathVariable Long id, Model model) {
         BoardPost post = boardService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
+        
+        // 댓글 가져오기 (루트 댓글 10개)
+        List<Comment> comments = commentService.getRootComments(id, 0, 10);
+        // 각 댓글마다 하위 댓글도 fetch or set
+        comments.forEach(c -> c.setReplies(commentService.getReplies(c.getId())));
+
         model.addAttribute("post", post);
+        model.addAttribute("comments", comments);
         return "board/usr.bbs.read"; // read.jsp
     }
 
