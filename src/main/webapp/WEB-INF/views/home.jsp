@@ -13,11 +13,32 @@
         .btn { background:white; color:#764ba2; padding:12px 30px; border-radius:30px; text-decoration:none; font-weight:bold; margin:0 10px;}
         .welcome { font-size: 25px; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 	    var msg = '${updateMsg}';
 	    if (msg) {
 	        alert(msg);
 	    }
+	    document.addEventListener("DOMContentLoaded", function() {
+	        document.querySelectorAll('.btn_logout').forEach(btn => {
+	            btn.addEventListener('click', function(e) {
+	                e.preventDefault();
+	                const url = this.href;
+
+	                Swal.fire({
+	                    title: '정말 로그아웃하시겠습니까?',
+	                    icon: 'warning',
+	                    showCancelButton: true,
+	                    confirmButtonText: '로그아웃',
+	                    cancelButtonText: '취소'
+	                }).then((result) => {
+	                    if (result.isConfirmed) {
+	                        window.location.href = url;
+	                    }
+	                });
+	            });
+	        });
+	    });
 	</script>
 </head>
 <body>
@@ -33,9 +54,9 @@
 		
 	    <sec:authorize access="isAuthenticated()">
 	        <span class="welcome">안녕하세요, <sec:authentication property="name" />님</span>
-	        <a class="btn" href="board/list">게시판</a>
-	        <a class="btn" href="${pageContext.request.contextPath}/profile">회원정보 변경</a>
-	        <a class="btn" href="logout">로그아웃</a>
+	        <a class="btn btn_board" href="board/list">게시판</a>
+	        <a class="btn btn_profile" href="${pageContext.request.contextPath}/profile">회원정보 변경</a>
+	        <a class="btn_logout btn" href="logout">로그아웃</a>
 	    </sec:authorize>
 	
 	    <sec:authorize access="!isAuthenticated()">
