@@ -25,6 +25,7 @@
                     <th>ID</th>
                     <th>아이디</th>
                     <th>이름</th>
+                    <th>권한</th>
                     <th>상태</th>
                     <th>액션</th>
                 </tr>
@@ -35,6 +36,16 @@
                         <td>${user.id}</td>
                         <td>${user.userId}</td>
                         <td>${user.userName}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${user.role == 'ADMIN'}">
+                                    <span class="role_admin">관리자</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="role_user">일반 사용자</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                         <td>
                             <c:choose>
                                 <c:when test="${user.status == 0}">
