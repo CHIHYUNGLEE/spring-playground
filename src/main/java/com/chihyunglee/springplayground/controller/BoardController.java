@@ -47,11 +47,19 @@ public class BoardController {
         // 댓글 가져오기 (루트 댓글 10개)
         List<Comment> comments = commentService.getRootComments(id, 0, 10);
         // 각 댓글마다 하위 댓글도 fetch or set
-        comments.forEach(c -> c.setReplies(commentService.getReplies(c.getId())));
+        comments.forEach(c -> c.setReplies(getRepliesRecursive(c.getId())));
 
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
         return "board/usr.bbs.read"; // read.jsp
+    }
+    
+    public List<Comment> getRepliesRecursive(Long parentId) {
+        List<Comment> replies = commentService.getReplies(parentId); // parentId의 바로 아래 댓글
+        for (Comment reply : replies) {
+            reply.setReplies(getRepliesRecursive(reply.getId())); // 재귀로 대대댓글까지
+        }
+        return replies;
     }
 
     // 새 글 작성 폼
