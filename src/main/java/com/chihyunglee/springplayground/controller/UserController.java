@@ -43,6 +43,20 @@ public class UserController {
         return "user/userList"; // JSP 뷰
     }
 
+    // 일반권한 부여 (ROLE 업데이트)
+    @PostMapping("/grantUserRole/{id}")
+    public String grantUserRole(@PathVariable Long id) {
+        userService.grantUserByAdmin(id); // role을 admin으로 업데이트
+        return "redirect:/user/list?status=ALL";
+    }
+    
+    // 관리자 부여 (ROLE 업데이트)
+    @PostMapping("/grantAdminRole/{id}")
+    public String grantAdminRole(@PathVariable Long id) {
+        userService.grantAdminByAdmin(id); // role을 admin으로 업데이트
+        return "redirect:/user/list?status=ALL";
+    }
+
     // 회원 복귀 (status 업데이트)
     @PostMapping("/activate/{id}")
     public String activate(@PathVariable Long id) {

@@ -55,6 +55,26 @@
 	                                        탈퇴
 	                                    </button>
 	                                </form>
+	                                <c:choose>
+	                                	<c:when test="${user.role == 'ADMIN'}">
+			                                <!-- 일반 지정 처리 -->
+			                                <form method="post" action="/user/grantUserRole/${user.id}" style="display:inline;">
+			                                    <button type="submit" class="btn btn-sm btn-outline-primary"
+			                                        onclick="return confirm('정말 일반사용자로 지정하시겠습니까?');">
+			                                        일반사용자 시정
+			                                    </button>
+			                                </form>
+                                		</c:when>
+                                		<c:otherwise>
+                                			<!-- 관리자 지정 처리 -->
+			                                <form method="post" action="/user/grantAdminRole/${user.id}" style="display:inline;">
+			                                    <button type="submit" class="btn btn-sm btn-outline-primary"
+			                                        onclick="return confirm('정말 관리자로 지정하시겠습니까?');">
+			                                        관리자 지정
+			                                    </button>
+			                                </form>
+                                		</c:otherwise>
+                                	</c:choose>
                                 </c:when>
                                 <c:otherwise>
                                     <!-- 복귀 처리 -->

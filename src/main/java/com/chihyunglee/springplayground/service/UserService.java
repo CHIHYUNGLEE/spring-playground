@@ -76,6 +76,22 @@ public class UserService {
         userRepository.save(user);
     }
     
+    // 일반 권한 부여(관리자용)
+    public void grantUserByAdmin(Long id) {
+        User user = userRepository.findById(id)
+                                  .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        user.setRole(User.ROLE_USER); // 관리자로 role 변경
+        userRepository.save(user);
+    }
+    
+    // 관리자 권한 부여(관리자용)
+    public void grantAdminByAdmin(Long id) {
+        User user = userRepository.findById(id)
+                                  .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        user.setRole(User.ROLE_ADMIN); // 관리자로 role 변경
+        userRepository.save(user);
+    }
+    
     // 회원 복귀(관리자용)
     public void registerUserByAdmin(Long id) {
         User user = userRepository.findById(id)
