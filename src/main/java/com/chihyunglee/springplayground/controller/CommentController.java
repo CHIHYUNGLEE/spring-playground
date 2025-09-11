@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.chihyunglee.springplayground.service.CommentService;
-
 import com.chihyunglee.springplayground.security.CustomUserDetails;
 
 @Controller
 @RequestMapping("/comments")
 public class CommentController {
-
+    
     @Autowired
     private CommentService commentService;
 
@@ -45,9 +44,10 @@ public class CommentController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/delete/{id}")
-    public String deleteComment(@PathVariable Long id,
-                                @AuthenticationPrincipal CustomUserDetails currentUser) {
+    public String deleteComment(@PathVariable Long id, @RequestParam Long postId,
+                                @AuthenticationPrincipal CustomUserDetails currentUser) 
+    {
         commentService.deleteComment(id, currentUser);
-        return "redirect:/board/" + id;
+        return "redirect:/board/list/" + postId;
     }
 }

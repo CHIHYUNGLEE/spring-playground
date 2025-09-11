@@ -145,13 +145,20 @@
 		}
     </style>
     <script>
-		function checkComment(form) {
+		// 댓글창 컨텐츠 없을시 alert 띄움
+    	function checkComment(form) {
 		    const content = form.querySelector('textarea[name="content"]').value.trim();
 		    if (!content) {
 		        alert('댓글 내용을 입력해주세요!');
 		        return false; // submit 막기
 		    }
 		    return true;
+		}
+		
+		// 대댓글 작성버튼 토글용
+		function toggleReplyForm(commentId) {
+		    const form = document.getElementById("reply-form-" + commentId);
+		    form.style.display = (form.style.display === "none") ? "block" : "none";
 		}
 	</script>
 </head>
@@ -197,23 +204,25 @@
 			
 			        <c:if test="${comment.user.id == principal.user.id or fn:contains(pageContext.request.userPrincipal.authorities,'ROLE_ADMIN')}">
 			            <form action="/comments/delete/${comment.id}" method="post" style="display:inline;">
+			            	<input type="hidden" name="postId" value="${post.id}">
 			                <button type="submit" class="btn btn-sm btn-danger"
 			                    onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
 			            </form>
 			        </c:if>
 			
-			        <!-- 대댓글 작성 -->
-			        <form action="/comments/add" method="post" class="mt-2 ms-3" onsubmit="return checkComment(this);">
-			            <input type="hidden" name="postId" value="${post.id}">
-			            <input type="hidden" name="parentId" value="${comment.id}">
-			            <textarea name="content" class="form-control mb-1" placeholder="대댓글 작성"></textarea>
-			            <button type="submit" class="btn btn-sm btn-secondary">답글</button>
-			            <c:if test="${not empty errorReReplyMessage}">
-						    <div style="color:red; margin-bottom:10px;">
-						        ${errorReReplyMessage}
-						    </div>
-						</c:if>
-			        </form>
+			        <!-- 대댓글 작성 버튼 -->
+					<button type="button" class="btn btn-sm btn-secondary" 
+					        onclick="toggleReplyForm(${comment.id})">답글쓰기</button>
+					
+					<!-- 대댓글 작성 폼 (처음엔 숨김) -->
+					<div id="reply-form-${comment.id}" style="display:none; margin-top:10px;">
+					    <form action="/comments/add" method="post" onsubmit="return checkComment(this);">
+					        <input type="hidden" name="postId" value="${post.id}">
+					        <input type="hidden" name="parentId" value="${comment.id}">
+					        <textarea name="content" class="form-control mb-1" placeholder="대댓글 작성"></textarea>
+					        <button type="submit" class="btn btn-sm btn-secondary">등록</button>
+					    </form>
+					</div>
 			
 			        <!-- 대댓글 표시 -->
 			        <c:forEach var="reply" items="${comment.replies}">
