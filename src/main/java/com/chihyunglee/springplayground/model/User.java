@@ -21,6 +21,10 @@ public class User {
 
 	public static final int STATUS_NORMAL = 0;    // 정상 상태
     public static final int STATUS_WITHDRAW = 9100;  // 탈퇴 상태
+    
+	public static final String ROLE_ADMIN = "ADMIN";    // 관리자 상태
+    public static final String ROLE_USER = "USER";  // 일반 상태
+    
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +42,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private String role = "USER";
+    private String role = ROLE_USER;
 
     //회원가입일자 및 정보 수정일자
     private LocalDateTime createdAt = LocalDateTime.now();
