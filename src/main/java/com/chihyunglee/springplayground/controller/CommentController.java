@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.chihyunglee.springplayground.service.CommentService;
+import com.chihyunglee.springplayground.model.Comment;
 import com.chihyunglee.springplayground.security.CustomUserDetails;
 
 @Controller
@@ -29,17 +30,20 @@ public class CommentController {
                              @RequestParam String content,
                              @AuthenticationPrincipal CustomUserDetails currentUser,
                              RedirectAttributes redirectAttributes) {
-    	  try {
-    	        commentService.addComment(postId, parentId, content, currentUser);
-    	  } catch (IllegalArgumentException e) {
-    	        // 에러 메시지를 JSP에서 보여주기 위해 RedirectAttributes 사용
-			  if(Optional.ofNullable(parentId).orElse(0L) > 0) {//대댓글
-				  redirectAttributes.addFlashAttribute("errorReReplyMessage", e.getMessage());  
-			  }else {
-				  redirectAttributes.addFlashAttribute("errorReplyMessage", e.getMessage());
-			  }
-    	  }
-    	  return "redirect:/board/" + postId;
+		try {
+			Comment newComment= commentService.addComment(postId, parentId, content, currentUser);
+			return "redirect:/board/" + postId + "?focusId=" + newComment.getId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 에러 메시지를 JSP에서 보여주기 위해 RedirectAttributes 사용
+			// 오류 발생시 댓글/대댓글에 딸 오류 메시지 분리
+			if(Optional.ofNullable(parentId).orElse(0L) > 0) {//대댓글
+				redirectAttributes.addFlashAttribute("errorReReplyMessage", e.getMessage());  
+			}else {
+				redirectAttributes.addFlashAttribute("errorReplyMessage", e.getMessage());
+			}
+			return "redirect:/board/" + postId;
+		}
     }
     
     @PreAuthorize("isAuthenticated()")
@@ -59,7 +63,7 @@ public class CommentController {
 				  redirectAttributes.addFlashAttribute("errorReplyMessage", e.getMessage());
 			  }
     	  }
-    	  return "redirect:/board/" + postId;
+    	  return "redirect:/board/" + postId + "#view-mode-"+id;
     }
 
     

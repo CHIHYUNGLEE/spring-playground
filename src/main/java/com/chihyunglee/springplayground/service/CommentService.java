@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import com.chihyunglee.springplayground.model.BoardPost;
 import com.chihyunglee.springplayground.model.Comment;
-import com.chihyunglee.springplayground.model.User;
 import com.chihyunglee.springplayground.repository.BoardRepository;
 import com.chihyunglee.springplayground.repository.CommentRepository;
 import com.chihyunglee.springplayground.security.CustomUserDetails;
@@ -34,7 +33,7 @@ public class CommentService {
     }
 
     @Transactional
-    public void addComment(Long postId, Long parentId, String content, CustomUserDetails currentUser) {
+    public Comment addComment(Long postId, Long parentId, String content, CustomUserDetails currentUser) {
     	
         if (content == null || content.trim().isEmpty()) {
         	if(Optional.ofNullable(parentId).orElse(0L) > 0) {
@@ -59,7 +58,7 @@ public class CommentService {
         }
         comment.setUser(currentUser.getUser());
         comment.setContent(content);
-        commentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
     @Transactional

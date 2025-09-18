@@ -76,6 +76,10 @@
 		    margin-bottom: 8px;
 		}
 		
+		.createdDt{
+			font-size: 14px;
+		}
+		
 		/* 대댓글도 들여쓰기 없이 부모와 같은 위치 */
 		.reply {
 		    border-left: 3px solid #764ba2; /* 원하면 선만 남김 */
@@ -214,5 +218,15 @@
 		<!-- 댓글 목록 -->
 		<%@ include file="/WEB-INF/views/board/usr.comments.jspf" %>
 	</div>
+	<c:if test="${not empty param.focusId}">
+		<script>
+			window.onload = function() {
+			    const target = document.getElementById("comment-${param.focusId}");
+			    if (target) {
+			        target.scrollIntoView({ behavior: "smooth", block: "center" });
+			    }
+			}
+		</script>
+	</c:if>
 </body>
 </html>
