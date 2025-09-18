@@ -26,6 +26,9 @@
 
 	<c:if test="${not empty param.error}">
 	    <p style="color:red;">아이디 또는 비밀번호가 틀렸습니다.</p>
+        <script>
+	        document.getElementsByName("userId")[0].focus();
+	    </script>
 	</c:if>
 	
 	<c:if test="${not empty param.withdraw}">
