@@ -221,10 +221,12 @@
 	<c:if test="${not empty param.focusId}">
 		<script>
 			document.addEventListener("DOMContentLoaded", function() {
-			    const target = document.getElementById("comment-${param.focusId}");
-			    if (target) {
-			        target.scrollIntoView({ behavior: "smooth", block: "center" });
-			    }
+			    setTimeout(function() {
+			        const target = document.getElementById("view-mode-${param.focusId}");
+			        if (target) {
+			            target.scrollIntoView({ behavior: "smooth", block: "center" });
+			        }
+			    }, 100); // 0.1초 딜레이
 			});
 		</script>
 	</c:if>
