@@ -220,12 +220,12 @@
 	</div>
 	<c:if test="${not empty param.focusId}">
 		<script>
-			window.onload = function() {
+			document.addEventListener("DOMContentLoaded", function() {
 			    const target = document.getElementById("comment-${param.focusId}");
 			    if (target) {
 			        target.scrollIntoView({ behavior: "smooth", block: "center" });
 			    }
-			}
+			});
 		</script>
 	</c:if>
 </body>
