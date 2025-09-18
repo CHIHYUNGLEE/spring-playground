@@ -63,7 +63,7 @@ public class CommentController {
 				  redirectAttributes.addFlashAttribute("errorReplyMessage", e.getMessage());
 			  }
     	  }
-    	  return "redirect:/board/" + postId + "#view-mode-"+id;
+    	  return "redirect:/board/" + postId + "?focusId=" + id;
     }
 
     
