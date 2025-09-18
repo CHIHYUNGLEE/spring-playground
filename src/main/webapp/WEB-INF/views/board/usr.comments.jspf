@@ -83,7 +83,7 @@
 			                        <div id="reply-form-${reply.id}" style="display:none; margin-top:10px;">
 			                            <form action="/comments/add" method="post" onsubmit="return checkComment(this);">
 			                                <input type="hidden" name="postId" value="${post.id}">
-			                                <input type="hidden" name="parentId" value="${comment.id}">
+			                                <input type="hidden" name="parentId" value="${reply.id}">
 			                                <textarea name="content" class="form-control mb-1" placeholder="대댓글 작성"></textarea>
 			                                <button type="submit" class="btn btn-sm btn-secondary">등록</button>
 			                            </form>
@@ -139,7 +139,7 @@
 					                        <div id="reply-form-${subReply.id}" style="display:none; margin-top:10px;">
 					                            <form action="/comments/add" method="post" onsubmit="return checkComment(this);">
 					                                <input type="hidden" name="postId" value="${post.id}">
-					                                <input type="hidden" name="parentId" value="${reply.id}">
+					                                <input type="hidden" name="parentId" value="${subReply.id}">
 					                                <textarea name="content" class="form-control mb-1" placeholder="대댓글 작성"></textarea>
 					                                <button type="submit" class="btn btn-sm btn-secondary">등록</button>
 					                            </form>
