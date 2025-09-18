@@ -8,7 +8,7 @@
 		            <i style="color:gray;">${comment.content}</i>
 		        </c:when>
 		        <c:otherwise> <!-- 댓글 잇을때만 내용 보여줌. -->
-		        	<b style="color:#764ba2;">${comment.user.userName}</b> | ${comment.createdAt}<br>
+		        	<b style="color:#764ba2;">${comment.user.userName}</b>  |  <span class="createdDt">${comment.createdAt}</span><br>
 		        	<div id="view-mode-${comment.id}">
 			            ${comment.content}
 			            <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${comment.user.id}">
@@ -61,7 +61,9 @@
 		                        <b>
 		                            <a href="#comment-${comment.id}" style="color:#667eea; text-decoration:none;">${comment.user.userName}</a> → 
 		                            <span style="color:#764ba2;">${reply.user.userName}</span>
-		                        </b> | ${reply.createdAt}<br>
+		                        </b>
+		                        <span class="createdDt"> | ${reply.createdAt}</span>
+		                        <br>
 		                        <div id="view-mode-${reply.id}">
 			                        ${reply.content}
 			
@@ -116,10 +118,11 @@
 		                                <b>
 		                                    <a href="#reply-${reply.id}" style="color:#667eea; text-decoration:none;">${reply.user.userName}</a> → 
 		                                    <span style="color:#764ba2;">${subReply.user.userName}</span>
-		                                </b> | ${subReply.createdAt}<br>
+		                                </b>  |  
+		                                <span class="createdDt">${subReply.createdAt}</span>
+		                                <br>
 		                                <div id="view-mode-${subReply.id}">
 			                                ${subReply.content}
-			                                
 			                                <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${subReply.user.id}">
 								                <button type="button" class="btn btn-sm btn-danger"
 								                    	onclick="showEditForm(${subReply.id}, '${subReply.content}')">수정</button>
