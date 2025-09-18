@@ -85,7 +85,7 @@
 		    border-left: 3px solid #764ba2; /* 원하면 선만 남김 */
 		    padding-left: 8px; /* 약간 여백만 */
 		    margin-left: 0; /* 들여쓰기 제거 */
-		    background-color: #f1f1f1;
+		    /*background-color: #f1f1f1;*/
 		    border-radius: 8px;
 		}
 		
