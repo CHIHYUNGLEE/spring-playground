@@ -8,7 +8,12 @@
 		            <i style="color:gray;">${comment.content}</i>
 		        </c:when>
 		        <c:otherwise> <!-- 댓글 잇을때만 내용 보여줌. -->
-		        	<b style="color:#764ba2;">${comment.user.userName}</b>  |  <span class="createdDt">${comment.createdAt}</span><br>
+		        	<b style="color:#764ba2;">${comment.user.userName}</b>  |  
+		        	<span class="createdDt">${comment.createdAt}</span>
+		        	<c:if test="${comment.user.id == post.author.id}"> <!-- 게시글 작성자가 작성한 댓글은 '작성자' 표시 -->
+					    <span style="color:white; background-color:green; font-size:12px; font-weight:normal; margin-left: 5px;">작성자</span>
+					</c:if>
+		        	<br>
 		        	<div id="view-mode-${comment.id}">
 			            ${comment.content}
 			            <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${comment.user.id}">
@@ -63,6 +68,9 @@
 		                            <span style="color:#764ba2;">${reply.user.userName}</span>
 		                        </b>
 		                        <span class="createdDt"> | ${reply.createdAt}</span>
+		                        <c:if test="${reply.user.id == post.author.id}"> <!-- 게시글 작성자가 작성한 대댓글은 '작성자' 표시 -->
+								    <span style="color:white; background-color:green; font-size:12px; font-weight:normal; margin-left: 5px;">작성자</span>
+								</c:if>
 		                        <br>
 		                        <div id="view-mode-${reply.id}">
 			                        ${reply.content}
@@ -120,6 +128,9 @@
 		                                    <span style="color:#764ba2;">${subReply.user.userName}</span>
 		                                </b>  |  
 		                                <span class="createdDt">${subReply.createdAt}</span>
+		                                <c:if test="${subReply.user.id == post.author.id}"> <!-- 게시글 작성자가 작성한 대대댓글은 '작성자' 표시 -->
+										    <span style="color:white; background-color:green; font-size:12px; font-weight:normal; margin-left: 5px;">작성자</span>
+										</c:if>
 		                                <br>
 		                                <div id="view-mode-${subReply.id}">
 			                                ${subReply.content}
