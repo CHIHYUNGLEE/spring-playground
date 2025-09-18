@@ -34,7 +34,7 @@ public class CommentService {
     }
 
     @Transactional
-    public void addComment(Long postId, Long parentId, String content, User user) {
+    public void addComment(Long postId, Long parentId, String content, CustomUserDetails currentUser) {
     	
         if (content == null || content.trim().isEmpty()) {
         	if(Optional.ofNullable(parentId).orElse(0L) > 0) {
@@ -57,16 +57,46 @@ public class CommentService {
             
             comment.setParent(parent);
         }
-        comment.setUser(user);
+        comment.setUser(currentUser.getUser());
         comment.setContent(content);
         commentRepository.save(comment);
     }
 
     @Transactional
+    public void updateComment(Long commentId, Long parentId, String content, CustomUserDetails currentUser) {
+    	
+        if (content == null || content.trim().isEmpty()) {
+        	if(Optional.ofNullable(parentId).orElse(0L) > 0) {
+        		throw new IllegalArgumentException("대댓글 내용을 입력해야 합니다.");
+        	}else {
+        		throw new IllegalArgumentException("댓글 내용을 입력해야 합니다.");
+        	}
+        }
+    	
+        Comment comment = commentRepository.findById(commentId).orElseThrow();
+        if (currentUser.getUser().getRole().equals("ADMIN") || comment.getUser().getId().equals(currentUser.getUser().getId())) {
+	        comment.setContent(content);
+        } else {
+            throw new RuntimeException("삭제 권한이 없습니다.");
+        }
+    }
+    
+    @Transactional
     public void deleteComment(Long commentId, CustomUserDetails currentUser) {
         Comment comment = commentRepository.findById(commentId).orElseThrow();
-        if (currentUser.getUser().getRole().equals("ROLE_ADMIN") || comment.getUser().getId().equals(currentUser.getUser().getId())) {
-            commentRepository.delete(comment);
+        if (currentUser.getUser().getRole().equals("ADMIN") || comment.getUser().getId().equals(currentUser.getUser().getId())) {
+            // 자식 댓글이 있는지 확인
+            boolean hasChildren = !comment.getReplies().isEmpty();
+
+            if (hasChildren) {
+                // 실제 삭제 대신 "삭제된 댓글입니다."로 표시
+                comment.setContent("삭제된 댓글입니다.");
+                // 원한다면 작성자도 null 처리 가능 (익명화)
+                // comment.setUser(null);
+            } else {
+                // 자식 없으면 실제 삭제
+                commentRepository.delete(comment);
+            }
         } else {
             throw new RuntimeException("삭제 권한이 없습니다.");
         }

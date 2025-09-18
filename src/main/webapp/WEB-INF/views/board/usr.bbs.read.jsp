@@ -76,12 +76,11 @@
 		    margin-bottom: 8px;
 		}
 		
-		/* 대댓글 박스 */
+		/* 대댓글도 들여쓰기 없이 부모와 같은 위치 */
 		.reply {
-		    border-left: 3px solid #764ba2;
-		    margin-top: 10px;
-		    margin-left: 30px;
-		    padding-left: 12px;
+		    border-left: 3px solid #764ba2; /* 원하면 선만 남김 */
+		    padding-left: 8px; /* 약간 여백만 */
+		    margin-left: 0; /* 들여쓰기 제거 */
 		    background-color: #f1f1f1;
 		    border-radius: 8px;
 		}
@@ -160,6 +159,23 @@
 		    const form = document.getElementById("reply-form-" + commentId);
 		    form.style.display = (form.style.display === "none") ? "block" : "none";
 		}
+		
+		//댓글 수정용 토글함수
+		function showEditForm(commentId, content) {
+		    // 보기모드 숨기고 수정모드 보여주기
+		    document.getElementById("view-mode-" + commentId).style.display = "none";
+		    document.getElementById("edit-mode-" + commentId).style.display = "block";
+
+		    // textarea에 기존 댓글 내용 세팅
+		    document.getElementById("edit-textarea-" + commentId).value = content;
+		}
+
+		//수정모드 취소후 다시 댓글로 돌아오는 함수
+		function cancelEdit(commentId) {
+		    // 수정모드 숨기고 다시 보기모드 보여주기
+		    document.getElementById("edit-mode-" + commentId).style.display = "none";
+		    document.getElementById("view-mode-" + commentId).style.display = "block";
+		}
 	</script>
 </head>
 <body>
@@ -196,51 +212,7 @@
 		</form>
 			
 		<!-- 댓글 목록 -->
-		<div id="comments">
-			<c:forEach var="comment" items="${comments}">
-			    <div class="comment" id="comment-${comment.id}">
-			        <b>${comment.user.userName}</b> | ${comment.createdAt}<br>
-			        ${comment.content}
-			
-			        <c:if test="${comment.user.id == principal.user.id or fn:contains(pageContext.request.userPrincipal.authorities,'ROLE_ADMIN')}">
-			            <form action="/comments/delete/${comment.id}" method="post" style="display:inline;">
-			            	<input type="hidden" name="postId" value="${post.id}">
-			                <button type="submit" class="btn btn-sm btn-danger"
-			                    onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-			            </form>
-			        </c:if>
-			
-			        <!-- 대댓글 작성 버튼 -->
-					<button type="button" class="btn btn-sm btn-secondary" 
-					        onclick="toggleReplyForm(${comment.id})">답글쓰기</button>
-					
-					<!-- 대댓글 작성 폼 (처음엔 숨김) -->
-					<div id="reply-form-${comment.id}" style="display:none; margin-top:10px;">
-					    <form action="/comments/add" method="post" onsubmit="return checkComment(this);">
-					        <input type="hidden" name="postId" value="${post.id}">
-					        <input type="hidden" name="parentId" value="${comment.id}">
-					        <textarea name="content" class="form-control mb-1" placeholder="대댓글 작성"></textarea>
-					        <button type="submit" class="btn btn-sm btn-secondary">등록</button>
-					    </form>
-					</div>
-			
-			        <!-- 대댓글 표시 -->
-			        <c:forEach var="reply" items="${comment.replies}">
-			            <div class="reply" id="reply-${reply.id}">
-			                <b>${reply.user.userName}</b> | ${reply.createdAt}<br>
-			                ${reply.content}
-			                <!-- 대대댓글 작성 -->
-					        <form action="/comments/add" method="post">
-					            <input type="hidden" name="postId" value="${post.id}">
-					            <input type="hidden" name="parentId" value="${reply.id}">
-					            <textarea name="content"></textarea>
-					            <button type="submit">답글</button>
-					        </form>
-			            </div>
-			        </c:forEach>
-			    </div>
-			</c:forEach>
-		</div>
+		<%@ include file="/WEB-INF/views/board/usr.comments.jspf" %>
 	</div>
 </body>
 </html>

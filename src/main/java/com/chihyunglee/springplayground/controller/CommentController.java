@@ -30,7 +30,27 @@ public class CommentController {
                              @AuthenticationPrincipal CustomUserDetails currentUser,
                              RedirectAttributes redirectAttributes) {
     	  try {
-    	        commentService.addComment(postId, parentId, content, currentUser.getUser());
+    	        commentService.addComment(postId, parentId, content, currentUser);
+    	  } catch (IllegalArgumentException e) {
+    	        // 에러 메시지를 JSP에서 보여주기 위해 RedirectAttributes 사용
+			  if(Optional.ofNullable(parentId).orElse(0L) > 0) {//대댓글
+				  redirectAttributes.addFlashAttribute("errorReReplyMessage", e.getMessage());  
+			  }else {
+				  redirectAttributes.addFlashAttribute("errorReplyMessage", e.getMessage());
+			  }
+    	  }
+    	  return "redirect:/board/" + postId;
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/update/{id}")
+    public String updateComment(@PathVariable Long id, @RequestParam Long postId,
+    							@RequestParam(required = false) Long parentId,
+    							@RequestParam String content,
+    							@AuthenticationPrincipal CustomUserDetails currentUser,
+    							RedirectAttributes redirectAttributes) {
+    	  try {
+    	        commentService.updateComment(id, parentId, content, currentUser);
     	  } catch (IllegalArgumentException e) {
     	        // 에러 메시지를 JSP에서 보여주기 위해 RedirectAttributes 사용
 			  if(Optional.ofNullable(parentId).orElse(0L) > 0) {//대댓글
@@ -42,12 +62,14 @@ public class CommentController {
     	  return "redirect:/board/" + postId;
     }
 
+    
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/delete/{id}")
     public String deleteComment(@PathVariable Long id, @RequestParam Long postId,
                                 @AuthenticationPrincipal CustomUserDetails currentUser) 
     {
         commentService.deleteComment(id, currentUser);
-        return "redirect:/board/list/" + postId;
+        return "redirect:/board/" + postId;
     }
 }

@@ -1,0 +1,167 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<div id="comments">
+    <c:forEach var="comment" items="${comments}">
+        <div class="comment" id="comment-${comment.id}">
+        	<!-- 댓글 시작 -->
+            <c:choose>
+		        <c:when test="${comment.content eq '삭제된 댓글입니다.'}">
+		            <i style="color:gray;">${comment.content}</i>
+		        </c:when>
+		        <c:otherwise> <!-- 댓글 잇을때만 내용 보여줌. -->
+		        	<b style="color:#764ba2;">${comment.user.userName}</b> | ${comment.createdAt}<br>
+		        	<div id="view-mode-${comment.id}">
+			            ${comment.content}
+			            <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${comment.user.id}">
+			                <button type="button" class="btn btn-sm btn-danger"
+			                    	onclick="showEditForm(${comment.id}, '${comment.content}')">수정</button>
+			                <form action="/comments/delete/${comment.id}" method="post" style="display:inline;">
+			                    <input type="hidden" name="postId" value="${post.id}">
+			                    <button type="submit" class="btn btn-sm btn-danger"
+			                        onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+			                </form>
+			            </sec:authorize>
+			
+			            <!-- 대댓글 작성 버튼 -->
+			            <button type="button" class="btn btn-sm btn-secondary" 
+			                    onclick="toggleReplyForm(${comment.id})">답글쓰기</button>
+			            <div id="reply-form-${comment.id}" style="display:none; margin-top:10px;">
+			                <form action="/comments/add" method="post" onsubmit="return checkComment(this);">
+			                    <input type="hidden" name="postId" value="${post.id}">
+			                    <input type="hidden" name="parentId" value="${comment.id}">
+			                    <textarea name="content" class="form-control mb-1" placeholder="대댓글 작성"></textarea>
+			                    <button type="submit" class="btn btn-sm btn-secondary">등록</button>
+			                </form>
+			            </div>		
+					</div>
+		
+					<!-- 댓글 수정 모드(안 보이다가 수정 버튼 클릭하면 보임) -->
+				    <div id="edit-mode-${comment.id}" style="display:none; margin-top:10px;">
+				        <form action="/comments/update/${comment.id}" method="post" onsubmit="return checkComment(this);">
+				            <input type="hidden" name="postId" value="${post.id}">
+				            <textarea name="content" class="form-control mb-1" id="edit-textarea-${comment.id}"></textarea>
+				            <button type="submit" class="btn btn-sm btn-primary">등록</button>
+				            <button type="button" class="btn btn-sm btn-secondary" 
+				                    onclick="cancelEdit(${comment.id})">취소</button>
+				        </form>
+				    </div>
+		        </c:otherwise>
+		    </c:choose>
+			<!-- 댓글 끝 -->
+	
+            <!-- 대댓글(reply)들 시작 -->
+            <c:if test="${not empty comment.replies}">
+                <c:forEach var="reply" items="${comment.replies}">
+                	<!-- 대댓글(reply) 시작 -->
+                    <div class="reply" id="reply-${reply.id}" style="margin-left:20px;">
+	                    <c:choose>
+					        <c:when test="${reply.content eq '삭제된 댓글입니다.'}">
+					            <i style="color:gray;">${reply.content}</i>
+					        </c:when>
+					     	<c:otherwise> <!-- 대댓글 잇을때만 내용 보여줌. -->
+		                        <b>
+		                            <a href="#comment-${comment.id}" style="color:#667eea; text-decoration:none;">${comment.user.userName}</a> → 
+		                            <span style="color:#764ba2;">${reply.user.userName}</span>
+		                        </b> | ${reply.createdAt}<br>
+		                        <div id="view-mode-${reply.id}">
+			                        ${reply.content}
+			
+			                        <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${reply.user.id}">
+						                <button type="button" class="btn btn-sm btn-danger"
+						                    	onclick="showEditForm(${reply.id}, '${reply.content}')">수정</button>
+			                            <form action="/comments/delete/${reply.id}" method="post" style="display:inline;">
+			                                <input type="hidden" name="postId" value="${post.id}">
+			                                <button type="submit" class="btn btn-sm btn-danger"
+			                                    onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+			                            </form>
+			                        </sec:authorize>
+			
+			                        <!-- 대댓글 작성 버튼 -->
+			                        <button type="button" class="btn btn-sm btn-secondary" 
+			                                onclick="toggleReplyForm(${reply.id})">답글쓰기</button>
+			                        <div id="reply-form-${reply.id}" style="display:none; margin-top:10px;">
+			                            <form action="/comments/add" method="post" onsubmit="return checkComment(this);">
+			                                <input type="hidden" name="postId" value="${post.id}">
+			                                <input type="hidden" name="parentId" value="${comment.id}">
+			                                <textarea name="content" class="form-control mb-1" placeholder="대댓글 작성"></textarea>
+			                                <button type="submit" class="btn btn-sm btn-secondary">등록</button>
+			                            </form>
+			                        </div>
+		                        </div>
+		                        
+		                        <!-- 대댓글 수정 모드(안 보이다가 수정 버튼 클릭하면 보임) -->
+							    <div id="edit-mode-${reply.id}" style="display:none; margin-top:10px;">
+							        <form action="/comments/update/${reply.id}" method="post" onsubmit="return checkComment(this);">
+							            <input type="hidden" name="postId" value="${post.id}">
+							            <input type="hidden" name="parentId" value="${comment.id}">
+							            <textarea name="content" class="form-control mb-1" id="edit-textarea-${reply.id}"></textarea>
+							            <button type="submit" class="btn btn-sm btn-primary">등록</button>
+							            <button type="button" class="btn btn-sm btn-secondary" 
+							                    onclick="cancelEdit(${reply.id})">취소</button>
+							        </form>
+							    </div>
+	                    	</c:otherwise>
+			    		</c:choose>    
+                    </div>
+                    <!-- 대댓글(reply) 끝 -->
+                    
+                    <!-- 하위 댓글(subreply) 시작 (대대댓글) -->
+                    <c:if test="${not empty reply.replies}">
+                        <c:forEach var="subReply" items="${reply.replies}">
+                            <div class="reply" id="reply-${subReply.id}" style="margin-left:20px;">
+                                <c:choose>
+						        	<c:when test="${subReply.content eq '삭제된 댓글입니다.'}">
+						            	<i style="color:gray;">${subReply.content}</i>
+						        	</c:when>
+						     		<c:otherwise> <!-- 대대댓글 잇을때만 내용 보여줌. -->
+		                                <b>
+		                                    <a href="#reply-${reply.id}" style="color:#667eea; text-decoration:none;">${reply.user.userName}</a> → 
+		                                    <span style="color:#764ba2;">${subReply.user.userName}</span>
+		                                </b> | ${subReply.createdAt}<br>
+		                                <div id="view-mode-${subReply.id}">
+			                                ${subReply.content}
+			                                
+			                                <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${subReply.user.id}">
+								                <button type="button" class="btn btn-sm btn-danger"
+								                    	onclick="showEditForm(${subReply.id}, '${subReply.content}')">수정</button>
+					                            <form action="/comments/delete/${subReply.id}" method="post" style="display:inline;">
+					                                <input type="hidden" name="postId" value="${post.id}">
+					                                <button type="submit" class="btn btn-sm btn-danger"
+					                                    onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+					                            </form>
+					                        </sec:authorize>
+					
+					                        <!-- 대댓글 작성 버튼 -->
+					                        <button type="button" class="btn btn-sm btn-secondary" 
+					                                onclick="toggleReplyForm(${subReply.id})">답글쓰기</button>
+					                        <div id="reply-form-${subReply.id}" style="display:none; margin-top:10px;">
+					                            <form action="/comments/add" method="post" onsubmit="return checkComment(this);">
+					                                <input type="hidden" name="postId" value="${post.id}">
+					                                <input type="hidden" name="parentId" value="${reply.id}">
+					                                <textarea name="content" class="form-control mb-1" placeholder="대댓글 작성"></textarea>
+					                                <button type="submit" class="btn btn-sm btn-secondary">등록</button>
+					                            </form>
+					                        </div>
+				                        </div>
+				                        
+				                        <!-- 대대댓글 수정 모드(안 보이다가 수정 버튼 클릭하면 보임) -->
+									    <div id="edit-mode-${subReply.id}" style="display:none; margin-top:10px;">
+									        <form action="/comments/update/${subReply.id}" method="post" onsubmit="return checkComment(this);">
+									            <input type="hidden" name="postId" value="${post.id}">
+									            <input type="hidden" name="parentId" value="${reply.id}">
+									            <textarea name="content" class="form-control mb-1" id="edit-textarea-${subReply.id}"></textarea>
+									            <button type="submit" class="btn btn-sm btn-primary">등록</button>
+									            <button type="button" class="btn btn-sm btn-secondary" 
+									                    onclick="cancelEdit(${subReply.id})">취소</button>
+									        </form>
+									    </div>
+		                    		</c:otherwise>
+			    				</c:choose>    
+                            </div>
+                        </c:forEach>
+                    </c:if>
+                    <!-- 하위 댓글(subreply) 끝 (대대댓글) -->
+                </c:forEach>
+            </c:if>
+        </div>
+    </c:forEach>
+</div>
