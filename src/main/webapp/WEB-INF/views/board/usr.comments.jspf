@@ -16,6 +16,7 @@
 		        	<br>
 		        	<div id="view-mode-${comment.id}">
 			            ${comment.content}
+			            <br>
 			            <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${comment.user.id}">
 			                <button type="button" class="btn btn-sm btn-danger"
 			                    	onclick="showEditForm(${comment.id}, '${comment.content}')">수정</button>
@@ -74,7 +75,7 @@
 		                        <br>
 		                        <div id="view-mode-${reply.id}">
 			                        ${reply.content}
-			
+									<br>
 			                        <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${reply.user.id}">
 						                <button type="button" class="btn btn-sm btn-danger"
 						                    	onclick="showEditForm(${reply.id}, '${reply.content}')">수정</button>
@@ -134,6 +135,7 @@
 		                                <br>
 		                                <div id="view-mode-${subReply.id}">
 			                                ${subReply.content}
+			                                <br>
 			                                <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${subReply.user.id}">
 								                <button type="button" class="btn btn-sm btn-danger"
 								                    	onclick="showEditForm(${subReply.id}, '${subReply.content}')">수정</button>
