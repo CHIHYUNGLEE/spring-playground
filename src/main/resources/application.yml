@@ -27,7 +27,7 @@ spring:
           starttls:
             enable: true  
   datasource:
-    url: jdbc:mysql://localhost:3306/mydb   # DB URL
+    url: jdbc:mysql://localhost:3306/spring_playground  # DB URL
     username: myuser                        # DB 계정
-    password: mypassword                    # DB 비밀번호
+    password: 1234                    # DB 비밀번호
     driver-class-name: com.mysql.cj.jdbc.Driver
