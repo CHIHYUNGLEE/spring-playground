@@ -41,11 +41,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
         .csrf(csrf -> csrf.disable())
+        .cors(cors -> {})
         .authorizeHttpRequests(auth -> auth
         	// FORWARD 타입의 디스패처 요청에 대해서는 모두 허용합니다.
             .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll() 
             .requestMatchers("/", "/home", "/login", "/register", "/findPassword",
-                            "/css/**", "/js/**", "/images/**", "/doLogin", "/error").permitAll()
+                            "/css/**", "/js/**", "/images/**", "/doLogin", "/error", "/api/**").permitAll()
             .anyRequest().authenticated() // 아직은 모든 요청 허용
         )
         .formLogin(form -> form
