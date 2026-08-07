@@ -11,17 +11,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.chihyunglee.springplayground.service.BoardApiService;
+
 @RestController
 @RequestMapping("/api/posts")
 public class BoardApiController {
 
+	private final BoardApiService boardApiService;
 
-    private final BoardApiRepository boardRepository;
 
+    public BoardApiController(BoardApiService boardApiService){
 
-    public BoardApiController(BoardApiRepository boardRepository){
-
-        this.boardRepository = boardRepository;
+        this.boardApiService = boardApiService;
 
     }
 
@@ -29,14 +30,14 @@ public class BoardApiController {
     @GetMapping
     public List<Board> list(){
 
-        return boardRepository.findAll();
+        return boardApiService.findAll();
 
     }
 
     @PostMapping
     public Board create(@RequestBody Board board){
 
-        return boardRepository.save(board);
+        return boardApiService.save(board);
 
     }
 
@@ -46,29 +47,27 @@ public class BoardApiController {
             @RequestBody Board board
     ){
 
-        Board existing = boardRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+        Board existing = boardApiService.findById(id);
 
 
         existing.setTitle(board.getTitle());
 
 
-        return boardRepository.save(existing);
+        return boardApiService.save(existing);
 
     }
     
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
 
-        boardRepository.deleteById(id);
+    	boardApiService.deleteById(id);
 
     }
     
     @GetMapping("/{id}")
     public Board detail(@PathVariable Long id){
 
-        return boardRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+        return boardApiService.findById(id);
 
     }
 }
