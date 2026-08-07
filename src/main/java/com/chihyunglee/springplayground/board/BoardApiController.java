@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.chihyunglee.springplayground.dto.BoardApiDto;
 import com.chihyunglee.springplayground.service.BoardApiService;
 
 @RestController
@@ -28,32 +29,25 @@ public class BoardApiController {
 
 
     @GetMapping
-    public List<Board> list(){
+    public List<BoardApiDto> list(){
 
         return boardApiService.findAll();
 
     }
 
     @PostMapping
-    public Board create(@RequestBody Board board){
+    public BoardApiDto create(@RequestBody BoardApiDto dto){
 
-        return boardApiService.save(board);
+        return boardApiService.save(dto);
 
     }
 
     @PutMapping("/{id}")
-    public Board update(
+    public BoardApiDto update(
             @PathVariable Long id,
-            @RequestBody Board board
-    ){
+            @RequestBody BoardApiDto dto){
 
-        Board existing = boardApiService.findById(id);
-
-
-        existing.setTitle(board.getTitle());
-
-
-        return boardApiService.save(existing);
+        return boardApiService.update(id, dto);
 
     }
     
@@ -65,7 +59,7 @@ public class BoardApiController {
     }
     
     @GetMapping("/{id}")
-    public Board detail(@PathVariable Long id){
+    public BoardApiDto detail(@PathVariable Long id){
 
         return boardApiService.findById(id);
 
