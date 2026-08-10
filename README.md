@@ -21,13 +21,18 @@ SPA 프레임워크 학습을 위해 진행한 실습입니다.
 
 백엔드
 
+```
 ./mvnw spring-boot:run
+```
 
 
 프론트
 
+```
+cd vue-board
 npm install
 npm run dev
+```
 
 
 ### url
@@ -40,5 +45,13 @@ npm run dev
 
 
 ### 화면
+**Vue 게시판 목록/수정**
+
+<img width="606" height="324" alt="image" src="https://github.com/user-attachments/assets/8bd5075f-8cf0-4c94-8594-833d44133b21" />
+<img width="513" height="140" alt="image" src="https://github.com/user-attachments/assets/6118d2d5-9fc5-4ae9-810b-b28ac24925d8" />
+
+
+**로그인 화면**
+
 <img width="789" height="408" alt="image" src="https://github.com/user-attachments/assets/cc9eb5b3-0395-4185-9d00-1560695593f3" />
 
