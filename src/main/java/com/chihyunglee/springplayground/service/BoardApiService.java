@@ -2,6 +2,8 @@ package com.chihyunglee.springplayground.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.chihyunglee.springplayground.board.Board;
@@ -38,6 +40,44 @@ public class BoardApiService {
 
     }
 
+    /**
+     * 페이징용 함수 추가
+     * @param keyword
+     * @param pageable
+     * @return
+     */
+    public Page<BoardApiDto> findPage(
+            String keyword,
+            Pageable pageable) {
+
+        Page<Board> boards;
+
+        if (keyword == null || keyword.isBlank()) {
+
+            boards = boardApiRepository.findAll(pageable);
+
+        } else {
+
+            boards = boardApiRepository.findByTitleContaining(
+                    keyword,
+                    pageable
+            );
+
+        }
+
+        return boards.map(board -> {
+
+            BoardApiDto dto = new BoardApiDto();
+
+            dto.setId(board.getId());
+            dto.setTitle(board.getTitle());
+            dto.setContent(board.getContent());
+
+            return dto;
+
+        });
+    }
+    
     public BoardApiDto update(Long id, BoardApiDto dto){
 
         Board existing = findEntityById(id);

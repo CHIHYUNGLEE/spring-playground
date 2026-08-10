@@ -1,114 +1,144 @@
 <template>
 
-<div class="board-container">
+	<div class="board-container">
 
-  <!-- 게시판 상단 -->
-  <div class="board-header">
+	  <!-- 헤더 -->
+	  <div class="board-header">
+	    <div>
+	      <h1>게시판</h1>
+	      <p>Spring Playground Board</p>
+	    </div>
 
-    <div>
-      <h1>게시판</h1>
-      <p>Spring Playground Board</p>
-    </div>
-
-    <button
-      class="write-button"
-      @click="goWrite"
-    >
-      + 등록
-    </button>
-
-  </div>
+	    <button
+	      class="write-button"
+	      @click="goWrite"
+	    >
+	      + 등록
+	    </button>
+	  </div>
 
 
-  <!-- 검색 -->
-  <div class="search-area">
+	  <!-- 검색 -->
+	  <div class="search-area">
 
-    <input
-      v-model="keyword"
-      placeholder="검색어를 입력하세요"
-    />
+	    <input
+	      v-model="keyword"
+	      placeholder="검색어를 입력하세요"
+	      @keyup.enter="search"
+	    />
 
-    <button class="search-button">
-      검색
-    </button>
+	    <button
+	      class="search-button"
+	      @click="search"
+	    >
+	      검색
+	    </button>
 
-  </div>
-
-
-  <!-- 게시글 테이블 -->
-  <table class="board-table">
-
-    <thead>
-
-      <tr>
-        <th class="number-column">번호</th>
-        <th>제목</th>
-        <th class="manage-column">관리</th>
-      </tr>
-
-    </thead>
+	  </div>
 
 
-    <tbody>
+	  <!-- ⭐ table 시작 -->
+	  <table class="board-table">
 
-      <tr
-        v-for="post in filteredPosts"
-        :key="post.id"
-      >
+	    <thead>
 
-        <td class="number-column">
-          {{ post.id }}
-        </td>
+	      <tr>
+	        <th class="number-column">번호</th>
+	        <th>제목</th>
+	        <th class="manage-column">관리</th>
+	      </tr>
 
-
-        <td
-          class="title-column"
-          @click="goDetail(post.id)"
-        >
-          {{ post.title }}
-        </td>
+	    </thead>
 
 
-        <td class="manage-column">
+	    <tbody>
 
-        <button
-        class="edit-button"
-        @click.stop="goEdit(post.id)"
-        >
-        수정
-        </button>
+	      <tr
+	        v-for="post in boardStore.posts"
+	        :key="post.id"
+	      >
 
-        <button
-        class="delete-button"
-        @click.stop="remove(post.id)"
-        >
-        삭제
-        </button>
+	        <td class="number-column">
+	          {{ post.id }}
+	        </td>
 
-        </td>
+	        <td
+	          class="title-column"
+	          @click="goDetail(post.id)"
+	        >
+	          {{ post.title }}
+	        </td>
 
-      </tr>
+	        <td class="manage-column">
+
+	          <button
+	            class="edit-button"
+	            @click.stop="goEdit(post.id)"
+	          >
+	            수정
+	          </button>
+
+	          <button
+	            class="delete-button"
+	            @click.stop="remove(post.id)"
+	          >
+	            삭제
+	          </button>
+
+	        </td>
+
+	      </tr>
 
 
-      <!-- 게시글이 없을 때 -->
+	      <tr v-if="boardStore.posts.length === 0">
 
-      <tr v-if="filteredPosts.length === 0">
+	        <td
+	          colspan="3"
+	          class="empty-row"
+	        >
+	          게시글이 없습니다.
+	        </td>
 
-        <td
-          colspan="3"
-          class="empty-row"
-        >
-          게시글이 없습니다.
-        </td>
+	      </tr>
 
-      </tr>
+	    </tbody>
 
-    </tbody>
+	  </table>
+	  <!-- ⭐ table 끝 -->
 
-  </table>
 
-</div>
+	  <!-- ⭐ 페이징은 table 밖 -->
+	  <div class="pagination">
 
+	    <button
+	      :disabled="boardStore.currentPage === 0"
+	      @click="changePage(boardStore.currentPage - 1)"
+	    >
+	      이전
+	    </button>
+
+
+	    <button
+	      v-for="page in boardStore.totalPages"
+	      :key="page"
+	      :class="{ active: boardStore.currentPage === page - 1 }"
+	      @click="changePage(page - 1)"
+	    >
+	      {{ page }}
+	    </button>
+
+
+	    <button
+	      :disabled="boardStore.currentPage >= boardStore.totalPages - 1"
+	      @click="changePage(boardStore.currentPage + 1)"
+	    >
+	      다음
+	    </button>
+
+	  </div>
+
+	</div>
+	
 </template>
 
 
@@ -128,6 +158,24 @@ onMounted(() => {
   boardStore.fetchPosts()
 
 })
+
+async function search() {
+
+  await boardStore.fetchPosts(
+    0,
+    keyword.value
+  )
+
+}
+
+async function changePage(page) {
+
+  await boardStore.fetchPosts(
+    page,
+    keyword.value
+  )
+
+}
 
 const filteredPosts = computed(() => {
 
@@ -403,6 +451,38 @@ async function remove(id){
     width: 120px;
   }
 
+}
+
+/* =========================
+   페이지 버튼
+========================= */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-top: 28px;
+}
+
+.pagination button {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 7px;
+
+  background: #fff;
+  color: #666;
+
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: #222;
+  color: #fff;
+  border-color: #222;
 }
 
 </style>

@@ -5,18 +5,44 @@ import axios from 'axios'
 
 export const useBoardStore = defineStore('board', () => {
 
-    const posts = ref([])
+    // 게시글 목록 
+	const posts = ref([]) 
+	
+	// 현재 페이지 
+	const currentPage = ref(0) 
+	
+	// 전체 페이지 수 
+	const totalPages = ref(0) 
+	
+	// 전체 게시글 수 
+	const totalElements = ref(0) 
+	
+	// 페이지당 게시글 수 
+	const pageSize = ref(10)
 
-    async function fetchPosts(){
-
-        const response = await axios.get(
-            'http://localhost:9090/api/posts'
-        )
-
-        posts.value = response.data
-
-    }
-
+	
+	// 게시글 목록 조회 
+	async function fetchPosts( 
+		page = 0, 
+		keyword = '' 
+	) { 
+		const response = await axios.get( 
+			'http://localhost:9090/api/posts', 
+			{
+				params: { 
+					page: page, 
+					size: pageSize.value, 
+					keyword: keyword 
+				} 
+			} 
+		)
+		posts.value = response.data.content 
+		currentPage.value = response.data.number 
+		totalPages.value = response.data.totalPages 
+		totalElements.value = response.data.totalElements 
+	}
+		
+	// 게시글 등록	
     async function addPost(post){
 
         await axios.post(
@@ -28,6 +54,7 @@ export const useBoardStore = defineStore('board', () => {
 
     }
 
+	// 게시글 수정
     async function updatePost(id, post){
 
         await axios.put(
@@ -40,6 +67,7 @@ export const useBoardStore = defineStore('board', () => {
 
     }
 
+	// 게시글 삭제
     async function deletePost(id){
 
         await axios.delete(
@@ -52,11 +80,18 @@ export const useBoardStore = defineStore('board', () => {
     }
 
     return {
-        posts,
-        fetchPosts,
-        addPost,
-        updatePost,
-        deletePost
+		posts, 
+		
+		currentPage, 
+		totalPages, 
+		totalElements, 
+		pageSize, 
+		
+		fetchPosts, 
+		
+		addPost, 
+		updatePost, 
+		deletePost
     }
 
 })
