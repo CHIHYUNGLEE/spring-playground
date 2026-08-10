@@ -145,80 +145,107 @@
 
 	    <!-- 페이지 번호 -->
 
-	    <div class="pagination">
+		<div class="pagination">
 
-	      <button
-	        :disabled="boardStore.currentPage === 0"
-	        @click="changePage(boardStore.currentPage - 1)"
-	      >
-	        이전
-	      </button>
+		  <!-- 처음 -->
 
-
-	      <!-- 첫 페이지 -->
-
-	      <button
-	        v-if="startPage > 1"
-	        @click="changePage(0)"
-	      >
-	        1
-	      </button>
+		  <button
+		    :disabled="boardStore.currentPage === 0"
+		    @click="changePage(0)"
+		  >
+		    «
+		  </button>
 
 
-	      <!-- 앞쪽 ... -->
+		  <!-- 이전 -->
 
-	      <span
-	        v-if="startPage > 2"
-	        class="ellipsis"
-	      >
-	        ...
-	      </span>
-
-
-	      <!-- 페이지 번호 -->
-
-	      <button
-	        v-for="page in pageNumbers"
-	        :key="page"
-	        :class="{
-	          active: boardStore.currentPage === page
-	        }"
-	        @click="changePage(page)"
-	      >
-	        {{ page + 1 }}
-	      </button>
+		  <button
+		    :disabled="boardStore.currentPage === 0"
+		    @click="changePage(boardStore.currentPage - 1)"
+		  >
+		    ‹
+		  </button>
 
 
-	      <!-- 뒤쪽 ... -->
+		  <!-- 첫 페이지 -->
 
-	      <span
-	        v-if="endPage < boardStore.totalPages - 1"
-	        class="ellipsis"
-	      >
-	        ...
-	      </span>
-
-
-	      <!-- 마지막 페이지 -->
-
-	      <button
-	        v-if="endPage < boardStore.totalPages - 1"
-	        @click="changePage(boardStore.totalPages - 1)"
-	      >
-	        {{ boardStore.totalPages }}
-	      </button>
+		  <button
+		    v-if="startPage > 1"
+		    @click="changePage(0)"
+		  >
+		    1
+		  </button>
 
 
-	      <button
-	        :disabled="
-	          boardStore.currentPage >= boardStore.totalPages - 1
-	        "
-	        @click="changePage(boardStore.currentPage + 1)"
-	      >
-	        다음
-	      </button>
+		  <!-- 앞쪽 ... -->
 
-	    </div>
+		  <span
+		    v-if="startPage > 2"
+		    class="ellipsis"
+		  >
+		    ...
+		  </span>
+
+
+		  <!-- 페이지 번호 -->
+
+		  <button
+		    v-for="page in pageNumbers"
+		    :key="page"
+		    :class="{
+		      active: boardStore.currentPage === page
+		    }"
+		    @click="changePage(page)"
+		  >
+		    {{ page + 1 }}
+		  </button>
+
+
+		  <!-- 뒤쪽 ... -->
+
+		  <span
+		    v-if="endPage < boardStore.totalPages - 2"
+		    class="ellipsis"
+		  >
+		    ...
+		  </span>
+
+
+		  <!-- 마지막 페이지 -->
+
+		  <button
+		    v-if="endPage < boardStore.totalPages - 1"
+		    @click="changePage(boardStore.totalPages - 1)"
+		  >
+		    {{ boardStore.totalPages }}
+		  </button>
+
+
+		  <!-- 다음 -->
+
+		  <button
+		    :disabled="
+		      boardStore.currentPage >= boardStore.totalPages - 1
+		    "
+		    @click="changePage(boardStore.currentPage + 1)"
+		  >
+		    ›
+		  </button>
+
+
+		  <!-- 마지막 -->
+
+		  <button
+		    :disabled="
+		      boardStore.currentPage >= boardStore.totalPages - 1
+		    "
+		    @click="changePage(boardStore.totalPages - 1)"
+		  >
+		    »
+		  </button>
+
+		</div>
+		<!-- 페이지 번호 끝-->
 
 	  </div>
 
@@ -696,8 +723,6 @@ const pageNumbers = computed(() => {
   width: 36px;
   height: 36px;
 
-  padding: 0;
-
   border: 1px solid #e5e5e5;
   border-radius: 7px;
 
@@ -705,13 +730,15 @@ const pageNumbers = computed(() => {
   color: #666;
 
   font-size: 13px;
-
   cursor: pointer;
+
+  transition: 0.15s;
 }
 
 
 .pagination button:hover:not(:disabled) {
   background: #f5f5f5;
+  border-color: #bbb;
 }
 
 
@@ -728,13 +755,18 @@ const pageNumbers = computed(() => {
   cursor: default;
 }
 
+.sort-select {
+  height: 40px;
 
-.ellipsis {
-  width: 24px;
+  padding: 0 12px;
 
-  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 7px;
 
-  color: #999;
+  background: white;
+
+  font-size: 14px;
+
+  cursor: pointer;
 }
-
 </style>
