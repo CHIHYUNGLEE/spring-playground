@@ -61,8 +61,8 @@ public class BoardApiService {
         Board board = new Board();
 
         board.setTitle(dto.getTitle());
-
-
+        board.setContent(dto.getContent());
+        
         Board saved = boardApiRepository.save(board);
 
 
