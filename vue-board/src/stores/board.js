@@ -19,6 +19,9 @@ export const useBoardStore = defineStore('board', () => {
 	
 	// 페이지당 게시글 수 
 	const pageSize = ref(10)
+	
+	//정렬
+	const sort = ref('id,desc')
 
 	
 	// 게시글 목록 조회 
@@ -32,7 +35,8 @@ export const useBoardStore = defineStore('board', () => {
 				params: { 
 					page: page, 
 					size: pageSize.value, 
-					keyword: keyword 
+					keyword: keyword,
+					sort: sort.value 
 				} 
 			} 
 		)
@@ -80,16 +84,17 @@ export const useBoardStore = defineStore('board', () => {
     }
 
     return {
-		posts, 
+		posts,
 		
-		currentPage, 
-		totalPages, 
-		totalElements, 
-		pageSize, 
+		currentPage,
+		totalPages,
+		totalElements,
+		pageSize,
+		sort,
 		
 		fetchPosts, 
 		
-		addPost, 
+		addPost,
 		updatePost, 
 		deletePost
     }

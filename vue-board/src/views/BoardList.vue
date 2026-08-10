@@ -18,7 +18,7 @@
 	  </div>
 
 
-	  <!-- 검색 -->
+	  <!-- 검색 및 정렬-->
 	  <div class="search-area">
 
 	    <input
@@ -26,6 +26,20 @@
 	      placeholder="검색어를 입력하세요"
 	      @keyup.enter="search"
 	    />
+
+	    <select
+	      v-model="boardStore.sort"
+	      @change="changeSort"
+	      class="sort-select"
+	    >
+	      <option value="id,desc">
+	        최신순
+	      </option>
+
+	      <option value="id,asc">
+	        오래된순
+	      </option>
+	    </select>
 
 	    <button
 	      class="search-button"
@@ -260,6 +274,15 @@ async function changePageSize() {
 
 }
 
+//정렬
+async function changeSort() {
+
+  await boardStore.fetchPosts(
+    0,
+    keyword.value
+  )
+
+}
 
 function goDetail(id){
 
