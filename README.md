@@ -47,7 +47,7 @@ npm run dev
 ### 화면
 **Vue 게시판 목록/상세조회/수정**
 
-<img width="1056" height="662" alt="image" src="https://github.com/user-attachments/assets/e231660d-edc5-4c4f-a295-296cee657bb7" />
+<img width="941" height="660" alt="image" src="https://github.com/user-attachments/assets/6bf1dd67-1b54-412c-9e35-1be3f9767f1e" />
 
 <img width="1099" height="617" alt="image" src="https://github.com/user-attachments/assets/1df2e8ee-49e3-4cb3-aaaf-3ea3ad115c12" />
 
