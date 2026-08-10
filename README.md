@@ -45,10 +45,13 @@ npm run dev
 
 
 ### 화면
-**Vue 게시판 목록/수정**
+**Vue 게시판 목록/상세조회/수정**
 
-<img width="606" height="324" alt="image" src="https://github.com/user-attachments/assets/8bd5075f-8cf0-4c94-8594-833d44133b21" />
-<img width="513" height="140" alt="image" src="https://github.com/user-attachments/assets/6118d2d5-9fc5-4ae9-810b-b28ac24925d8" />
+<img width="1056" height="662" alt="image" src="https://github.com/user-attachments/assets/e231660d-edc5-4c4f-a295-296cee657bb7" />
+
+<img width="1099" height="617" alt="image" src="https://github.com/user-attachments/assets/1df2e8ee-49e3-4cb3-aaaf-3ea3ad115c12" />
+
+<img width="1270" height="847" alt="image" src="https://github.com/user-attachments/assets/9e2aecfa-91ff-4884-a719-60a9749bcad1" />
 
 
 **로그인 화면**
