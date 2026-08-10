@@ -108,32 +108,103 @@
 
 
 	  <!-- ⭐ 페이징은 table 밖 -->
-	  <div class="pagination">
+	  <div class="pagination-area">
 
-	    <button
-	      :disabled="boardStore.currentPage === 0"
-	      @click="changePage(boardStore.currentPage - 1)"
-	    >
-	      이전
-	    </button>
+	    <!-- 페이지당 게시글 수 -->
+
+	    <div class="page-size">
+
+	      <select
+	        v-model.number="boardStore.pageSize"
+	        @change="changePageSize"
+	      >
+	        <option :value="10">10개</option>
+	        <option :value="20">20개</option>
+	        <option :value="50">50개</option>
+	        <option :value="100">100개</option>
+	      </select>
+
+	      <span>씩 보기</span>
+
+	    </div>
 
 
-	    <button
-	      v-for="page in boardStore.totalPages"
-	      :key="page"
-	      :class="{ active: boardStore.currentPage === page - 1 }"
-	      @click="changePage(page - 1)"
-	    >
-	      {{ page }}
-	    </button>
+	    <!-- 페이지 번호 -->
+
+	    <div class="pagination">
+
+	      <button
+	        :disabled="boardStore.currentPage === 0"
+	        @click="changePage(boardStore.currentPage - 1)"
+	      >
+	        이전
+	      </button>
 
 
-	    <button
-	      :disabled="boardStore.currentPage >= boardStore.totalPages - 1"
-	      @click="changePage(boardStore.currentPage + 1)"
-	    >
-	      다음
-	    </button>
+	      <!-- 첫 페이지 -->
+
+	      <button
+	        v-if="startPage > 1"
+	        @click="changePage(0)"
+	      >
+	        1
+	      </button>
+
+
+	      <!-- 앞쪽 ... -->
+
+	      <span
+	        v-if="startPage > 2"
+	        class="ellipsis"
+	      >
+	        ...
+	      </span>
+
+
+	      <!-- 페이지 번호 -->
+
+	      <button
+	        v-for="page in pageNumbers"
+	        :key="page"
+	        :class="{
+	          active: boardStore.currentPage === page
+	        }"
+	        @click="changePage(page)"
+	      >
+	        {{ page + 1 }}
+	      </button>
+
+
+	      <!-- 뒤쪽 ... -->
+
+	      <span
+	        v-if="endPage < boardStore.totalPages - 1"
+	        class="ellipsis"
+	      >
+	        ...
+	      </span>
+
+
+	      <!-- 마지막 페이지 -->
+
+	      <button
+	        v-if="endPage < boardStore.totalPages - 1"
+	        @click="changePage(boardStore.totalPages - 1)"
+	      >
+	        {{ boardStore.totalPages }}
+	      </button>
+
+
+	      <button
+	        :disabled="
+	          boardStore.currentPage >= boardStore.totalPages - 1
+	        "
+	        @click="changePage(boardStore.currentPage + 1)"
+	      >
+	        다음
+	      </button>
+
+	    </div>
 
 	  </div>
 
@@ -144,10 +215,9 @@
 
 <script setup>
 
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBoardStore } from '@/stores/board'
-import { onMounted } from 'vue'
 
 const keyword = ref("")
 const router = useRouter()
@@ -168,6 +238,8 @@ async function search() {
 
 }
 
+
+//페이지 이동 함수
 async function changePage(page) {
 
   await boardStore.fetchPosts(
@@ -177,15 +249,16 @@ async function changePage(page) {
 
 }
 
-const filteredPosts = computed(() => {
 
-    const search = keyword.value.toLowerCase()
+//페이지 당 게시글 수 변경
+async function changePageSize() {
 
-    return boardStore.posts.filter(post =>
-        post.title.toLowerCase().includes(search)
-    )
+  await boardStore.fetchPosts(
+    0,
+    keyword.value
+  )
 
-})
+}
 
 
 function goDetail(id){
@@ -215,6 +288,68 @@ async function remove(id){
     }
 
 }
+
+//페이지 계산
+const startPage = computed(() => {
+
+  const current = boardStore.currentPage
+  const total = boardStore.totalPages
+
+  if (total <= 7) {
+    return 0
+  }
+
+  if (current <= 3) {
+    return 1
+  }
+
+  if (current >= total - 4) {
+    return total - 6
+  }
+
+  return current - 2
+
+})
+
+//페이지 계산
+const endPage = computed(() => {
+
+  const total = boardStore.totalPages
+
+  if (total <= 7) {
+    return total - 1
+  }
+
+  if (boardStore.currentPage <= 3) {
+    return 5
+  }
+
+  if (boardStore.currentPage >= total - 4) {
+    return total - 2
+  }
+
+  return boardStore.currentPage + 2
+
+})
+
+//페이지 계산
+const pageNumbers = computed(() => {
+
+  const pages = []
+
+  for (
+    let i = startPage.value;
+    i <= endPage.value;
+    i++
+  ) {
+
+    pages.push(i)
+
+  }
+
+  return pages
+
+})
 
 </script>
 
@@ -483,6 +618,100 @@ async function remove(id){
   background: #222;
   color: #fff;
   border-color: #222;
+}
+
+.pagination-area {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 28px;
+}
+
+
+.page-size {
+  position: absolute;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #777;
+  font-size: 13px;
+}
+
+
+.page-size select {
+  height: 34px;
+
+  padding: 0 28px 0 10px;
+
+  border: 1px solid #ddd;
+  border-radius: 6px;
+
+  background: white;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 5px;
+}
+
+
+.pagination button {
+  width: 36px;
+  height: 36px;
+
+  padding: 0;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 7px;
+
+  background: white;
+  color: #666;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+
+.pagination button:hover:not(:disabled) {
+  background: #f5f5f5;
+}
+
+
+.pagination button.active {
+  background: #222;
+  color: white;
+  border-color: #222;
+}
+
+
+.pagination button:disabled {
+  color: #ccc;
+  background: #fafafa;
+  cursor: default;
+}
+
+
+.ellipsis {
+  width: 24px;
+
+  text-align: center;
+
+  color: #999;
 }
 
 </style>
