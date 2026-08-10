@@ -29,7 +29,8 @@ public class BoardApiService {
 
                     dto.setId(board.getId());
                     dto.setTitle(board.getTitle());
-
+                    dto.setContent(board.getContent());
+                    
                     return dto;
 
                 })
@@ -49,7 +50,8 @@ public class BoardApiService {
 
         result.setId(saved.getId());
         result.setTitle(saved.getTitle());
-
+        result.setContent(saved.getContent());
+        
         return result;
 
     }
@@ -68,7 +70,7 @@ public class BoardApiService {
 
         result.setId(saved.getId());
         result.setTitle(saved.getTitle());
-
+        result.setContent(saved.getContent());
 
         return result;
 
@@ -83,7 +85,8 @@ public class BoardApiService {
 
         dto.setId(board.getId());
         dto.setTitle(board.getTitle());
-
+        dto.setContent(board.getContent());
+        
         return dto;
     }
 

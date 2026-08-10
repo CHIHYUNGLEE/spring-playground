@@ -21,6 +21,8 @@ public class Board {
 
     private String title;
 
+    private String content;
+    
 
     public Long getId() {
         return id;
@@ -41,4 +43,11 @@ public class Board {
         this.title = title;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

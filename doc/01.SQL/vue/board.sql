@@ -10,3 +10,7 @@ update board set title = 'Vue 연동 CRUD 확인' where id = 4;
 INSERT INTO board(title)
 VALUES ('Spring Boot API 연동 테스트');
 commit;
+
+--내용 추가
+ALTER TABLE board
+ADD COLUMN content TEXT;

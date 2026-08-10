@@ -7,6 +7,7 @@ public class BoardApiDto {
 
     private String title;
 
+    private String content;
 
     public Long getId() {
         return id;
@@ -27,5 +28,12 @@ public class BoardApiDto {
         this.title = title;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
 }
