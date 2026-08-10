@@ -43,6 +43,7 @@ public class BoardApiService {
         Board existing = findEntityById(id);
 
         existing.setTitle(dto.getTitle());
+        existing.setContent(dto.getContent());
 
         Board saved = boardApiRepository.save(existing);
 
