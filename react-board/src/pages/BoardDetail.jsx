@@ -30,6 +30,22 @@ function BoardDetail() {
   if (!post) {
     return <div>게시글을 불러오는 중입니다...</div>
   }
+  
+  async function remove() {
+
+    if (!confirm('게시글을 삭제하시겠습니까?')) {
+      return
+    }
+
+
+    await axios.delete(
+      `http://localhost:9090/api/posts/${id}`
+    )
+
+
+    navigate('/board')
+
+  }
 
 
   return (
@@ -54,6 +70,10 @@ function BoardDetail() {
 	    onClick={() => navigate(`/board/edit/${post.id}`)}
 	  >
 	    수정
+	  </button>
+	  
+	  <button onClick={remove}>
+	    삭제
 	  </button>
     </div>
   )
