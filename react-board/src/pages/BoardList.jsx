@@ -61,7 +61,11 @@ function BoardList() {
         </tbody>
 
       </table>
-
+	  <button
+	    onClick={() => navigate('/board/write')}
+	  >
+	    + 등록
+	  </button>
     </div>
   )
 }

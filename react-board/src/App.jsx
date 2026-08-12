@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import BoardList from './pages/BoardList'
 import BoardDetail from './pages/BoardDetail'
-
+import BoardWrite from './pages/BoardWrite'
 
 function App() {
 
@@ -21,6 +21,11 @@ function App() {
 	  <Route
 	    path="/board/:id"
 	    element={<BoardDetail />}
+	  />
+	  
+	  <Route
+	    path="/board/write"
+	    element={<BoardWrite />}
 	  />
 	  
     </Routes>
