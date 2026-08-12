@@ -11,8 +11,11 @@ function BoardList() {
   // 게시글 목록
   const [posts, setPosts] = useState([])
 
-  // 검색어
+  // 검색창 입력값
   const [keyword, setKeyword] = useState('')
+
+  // 실제 검색에 사용하는 값
+  const [searchKeyword, setSearchKeyword] = useState('')
 
   // 현재 페이지
   const [currentPage, setCurrentPage] = useState(0)
@@ -24,6 +27,7 @@ function BoardList() {
   const [pageSize, setPageSize] = useState(10)
 
 
+  // 게시글 조회
   useEffect(() => {
 
     async function fetchPosts() {
@@ -34,25 +38,29 @@ function BoardList() {
           params: {
             page: currentPage,
             size: pageSize,
-            keyword: keyword
+            keyword: searchKeyword
           }
         }
       )
 
       setPosts(response.data.content)
+
       setTotalPages(response.data.totalPages)
 
     }
 
+
     fetchPosts()
 
-  }, [currentPage, pageSize, keyword])
+  }, [currentPage, pageSize, searchKeyword])
 
 
   // 검색
   function search() {
 
     setCurrentPage(0)
+
+    setSearchKeyword(keyword)
 
   }
 
@@ -69,6 +77,7 @@ function BoardList() {
   function changePageSize(event) {
 
     setPageSize(Number(event.target.value))
+
     setCurrentPage(0)
 
   }
@@ -217,6 +226,11 @@ function BoardList() {
 
             <button
               key={index}
+              className={
+                currentPage === index
+                  ? 'active'
+                  : ''
+              }
               onClick={() =>
                 changePage(index)
               }
