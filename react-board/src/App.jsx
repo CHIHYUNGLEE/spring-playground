@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import BoardList from './pages/BoardList'
 import BoardDetail from './pages/BoardDetail'
 import BoardWrite from './pages/BoardWrite'
+import BoardEdit from './pages/BoardEdit'
 
 function App() {
 
@@ -26,6 +27,11 @@ function App() {
 	  <Route
 	    path="/board/write"
 	    element={<BoardWrite />}
+	  />
+	  
+	  <Route
+	    path="/board/edit/:id"
+	    element={<BoardEdit />}
 	  />
 	  
     </Routes>

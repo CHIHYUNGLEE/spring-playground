@@ -50,7 +50,11 @@ function BoardDetail() {
       <button onClick={() => navigate('/board')}>
         목록
       </button>
-
+	  <button
+	    onClick={() => navigate(`/board/edit/${post.id}`)}
+	  >
+	    수정
+	  </button>
     </div>
   )
 }
