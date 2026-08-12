@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-
+import { useNavigate } from 'react-router-dom'
 
 function BoardList() {
 
   const [posts, setPosts] = useState([])
-
+  const navigate = useNavigate()
 
   useEffect(() => {
 
@@ -48,9 +48,11 @@ function BoardList() {
                 {post.id}
               </td>
 
-              <td>
-                {post.title}
-              </td>
+			  <td
+			    onClick={() => navigate(`/board/${post.id}`)}
+			  >
+			    {post.title}
+			  </td>
 
             </tr>
 
