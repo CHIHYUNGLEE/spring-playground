@@ -14,7 +14,8 @@
 					    <span style="color:white; background-color:green; font-size:12px; font-weight:normal; margin-left: 5px; padding:2px 6px; border-radius:8px;">작성자</span>
 					</c:if>
 		        	<br>
-		        	<div id="view-mode-${comment.id}">
+		        	<sec:authentication property="principal.user.id" var="loginUserId" />
+		        	<div id="view-mode-${comment.id}" style="${comment.user.id == loginUserId ? 'background-color:#f1f1f1;' : ''};">
 			            ${comment.content}
 			            <br>
 			            <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${comment.user.id}">
@@ -73,7 +74,7 @@
 								    <span style="color:white; background-color:green; font-size:12px; font-weight:normal; margin-left: 5px; padding:2px 6px; border-radius:8px;">작성자</span>
 								</c:if>
 		                        <br>
-		                        <div id="view-mode-${reply.id}">
+		                        <div id="view-mode-${reply.id}" style="${reply.user.id == loginUserId ? 'background-color:#f1f1f1;' : ''};">
 			                        ${reply.content}
 									<br>
 			                        <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${reply.user.id}">
@@ -133,7 +134,7 @@
 										    <span style="color:white; background-color:green; font-size:12px; font-weight:normal; margin-left: 5px; padding:2px 6px; border-radius:8px;">작성자</span>
 										</c:if>
 		                                <br>
-		                                <div id="view-mode-${subReply.id}">
+		                                <div id="view-mode-${subReply.id}" style="${subReply.user.id == loginUserId ? 'background-color:#f1f1f1;' : ''};">
 			                                ${subReply.content}
 			                                <br>
 			                                <sec:authorize access="hasRole('ROLE_ADMIN') or authentication.principal.user.id == ${subReply.user.id}">
