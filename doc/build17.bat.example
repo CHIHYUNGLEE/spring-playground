@@ -1,0 +1,8 @@
+@echo off
+rem 사용법: 이 파일을 build17.bat으로 복사한 뒤 아래 두 경로를 본인 PC에 맞게 수정
+rem build17.bat은 .gitignore에 포함되어 커밋되지 않음
+set JAVA_HOME=<JDK17_PATH>
+set PATH=%JAVA_HOME%\bin;%PATH%
+cd /d <PROJECT_PATH>
+java -version
+call mvn clean package -DskipTests
