@@ -1,0 +1,3 @@
+ALTER TABLE board
+  ADD COLUMN file_key  VARCHAR(255) NULL,
+  ADD COLUMN file_name VARCHAR(255) NULL;
