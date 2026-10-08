@@ -70,3 +70,13 @@ npm run dev
 ## 아마존 클라우드에 올리고 첨부파일 기능 추가중 (2026.10)
 
 소스 수정 후 build17.bat 배치 돌리고(자바바전 17로 변경 후 메이븐 빌드) scp 및 시스템 리스타트도 추가함
+
+## 문서
+
+| 문서 | 내용 |
+|---|---|
+| [docs/deploy.md](docs/deploy.md) | 빌드·배포 절차, 자주 쓰는 명령 |
+| [docs/infra.md](docs/infra.md) | AWS 구성 (EC2·RDS·S3·IAM·보안 그룹)과 설계 이유 |
+| [docs/troubleshooting.md](docs/troubleshooting.md) | 구축하며 겪은 문제와 해결 |
+| [docs/frontend.md](docs/frontend.md) | JSP·React·Vue 화면 구조와 배포 여부 |
+
