@@ -146,6 +146,9 @@
 		        padding-left: 10px;
 		    }
 		}
+		
+		/* 첨부파일용 */
+		.attachment a { color: #764ba2; font-size: 14px; }
     </style>
     <script>
 		// 댓글창 컨텐츠 없을시 alert 띄움
@@ -189,6 +192,12 @@
 	        작성자: ${post.author.userName} | 작성일: ${post.createdAt}
 	    </p>
 		<p>${post.content}</p>
+		
+		<c:if test="${not empty fileUrl}">
+		    <p class="attachment">
+		        📎 <a href="<c:out value='${fileUrl}'/>"><c:out value="${post.fileName}"/></a>
+		    </p>
+		</c:if>
 		
 	    <div class="btn-group">
 			<%-- 

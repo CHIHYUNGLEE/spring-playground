@@ -42,6 +42,12 @@ public class BoardPost {
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    @Column(name = "file_key")
+    private String fileKey;
+
+    @Column(name = "file_name")
+    private String fileName;
+    
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();

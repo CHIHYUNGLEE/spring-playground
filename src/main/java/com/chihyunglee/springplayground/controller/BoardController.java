@@ -1,5 +1,6 @@
 package com.chihyunglee.springplayground.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -12,12 +13,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.chihyunglee.springplayground.model.BoardPost;
 import com.chihyunglee.springplayground.model.Comment;
 import com.chihyunglee.springplayground.security.CustomUserDetails;
 import com.chihyunglee.springplayground.service.BoardService;
 import com.chihyunglee.springplayground.service.CommentService;
+import com.chihyunglee.springplayground.service.S3FileService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +32,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final CommentService commentService;
+    private final S3FileService s3FileService;   // 추가
 
     // 게시판 목록
     @PreAuthorize("isAuthenticated()")
@@ -49,6 +54,11 @@ public class BoardController {
         // 각 댓글마다 하위 댓글도 fetch or set
         comments.forEach(c -> c.setReplies(getRepliesRecursive(c.getId())));
 
+        if (post.getFileKey() != null) {
+            model.addAttribute("fileUrl",
+                s3FileService.downloadUrl(post.getFileKey(), post.getFileName()));
+        }
+        
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
         return "board/usr.bbs.read"; // read.jsp
@@ -70,13 +80,14 @@ public class BoardController {
         return "board/usr.bbs.write";
     }
 
-    // 새 글 저장
+ // 새 글 저장
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/save")
     public String create(@ModelAttribute BoardPost post,
-                         @AuthenticationPrincipal CustomUserDetails currentUser) {
+                         @RequestParam(value = "file", required = false) MultipartFile file,
+                         @AuthenticationPrincipal CustomUserDetails currentUser) throws IOException {
         post.setAuthor(currentUser.getUser());
-        boardService.save(post);
+        boardService.save(post, file);
         return "redirect:/board/list";
     }
 
