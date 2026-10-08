@@ -98,6 +98,13 @@
 		    <artifactId>spring-boot-devtools</artifactId>
 		</dependency>
 		
+		<!-- 아마존 웹서비스용 -->
+		<dependency>
+		    <groupId>software.amazon.awssdk</groupId>
+		    <artifactId>s3</artifactId>
+		    <version>2.25.0</version>
+		</dependency>
+		
     </dependencies>
 
     <build>
