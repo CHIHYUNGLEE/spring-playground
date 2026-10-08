@@ -62,3 +62,11 @@ npm run dev
 
 <img width="789" height="408" alt="image" src="https://github.com/user-attachments/assets/cc9eb5b3-0395-4185-9d00-1560695593f3" />
 
+
+
+
+
+
+## 아마존 클라우드에 올리고 첨부파일 기능 추가중 (2026.10)
+
+소스 수정 후 build17.bat 배치 돌리고(자바바전 17로 변경 후 메이븐 빌드) scp 및 시스템 리스타트도 추가함
