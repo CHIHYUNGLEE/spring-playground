@@ -19,7 +19,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: eno7135@gmail.com
-    password: vnzbrqsjlirrtyaj   # 구글 앱 비밀번호
+    password: ${SPRING_MAIL_PASSWORD:}   # 구글 앱 비밀번호 (환경변수, 없으면 메일 발송만 실패)
     properties:
       mail:
         smtp:
@@ -27,9 +27,9 @@ spring:
           starttls:
             enable: true  
   datasource:
-    url: jdbc:mysql://localhost:3306/spring_playground  # DB URL
-    username: myuser                        # DB 계정
-    password: 1234                    # DB 비밀번호
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/spring_playground}  # DB URL (기본값: 로컬)
+    username: ${SPRING_DATASOURCE_USERNAME:myuser}  # DB 계정 (기본값: 로컬)
+    password: ${SPRING_DATASOURCE_PASSWORD}         # DB 비밀번호 (환경변수 필수, 기본값 없음)
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
