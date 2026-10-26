@@ -57,7 +57,7 @@ public class BoardService {
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
 
         // Admin은 무조건 삭제 가능 / User는 본인 글만 삭제 가능
-        if (!currentUser.getRole().contains("ROLE_ADMIN")
+        if (!User.ROLE_ADMIN.equals(currentUser.getRole())
                 && !post.getAuthor().getId().equals(currentUser.getId())) {
             throw new AccessDeniedException("삭제 권한 없음");
         }
@@ -73,7 +73,7 @@ public class BoardService {
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
 
         // Admin은 무조건 수정 가능 / User는 본인 글만 수정 가능
-        if (!currentUser.getRole().contains("ROLE_ADMIN")
+        if (!User.ROLE_ADMIN.equals(currentUser.getRole())
                 && !post.getAuthor().getId().equals(currentUser.getId())) {
             throw new AccessDeniedException("수정 권한 없음");
         }
