@@ -27,6 +27,25 @@
 
 업무용 Java 8 환경을 건드리지 않도록 JAVA_HOME은 cmd 창 안에서만 바꿉니다.
 
+### 로컬 실행용 환경 변수 (이클립스)
+
+`application.yml`에는 비밀번호를 적지 않습니다. 로컬에서도 환경 변수로 넣어야 기동됩니다.
+
+1. Run → Run Configurations... → `SpringPlaygroundApplication` 선택  
+   (Spring Boot App 또는 Java Application 아래. 없으면 새로 만들고 Main type에 `com.chihyunglee.springplayground.SpringPlaygroundApplication`)
+2. Environment 탭 → Add...
+
+   | Name | Value |
+   |---|---|
+   | `SPRING_DATASOURCE_PASSWORD` | 로컬 MySQL 비밀번호 (필수) |
+   | `SPRING_MAIL_PASSWORD` | 구글 앱 비밀번호 (메일 기능 안 쓰면 생략) |
+
+3. "Append environment to native environment" 유지 → Apply → Run
+
+- Common 탭의 "Shared file"은 체크하지 않습니다. 체크하면 비밀번호가 든 `.launch` 파일이 프로젝트 안에 생겨 커밋될 수 있습니다.
+- 이클립스 밖(PowerShell)에서 실행할 때: `$env:SPRING_DATASOURCE_PASSWORD='...'` 후 `java -jar` 또는 `mvn spring-boot:run`
+- DB URL·계정은 yml 기본값(`localhost:3306/spring_playground`, `myuser`)을 쓰므로 로컬에서는 넣지 않아도 됩니다.
+
 ## 소스 수정 후 배포
 
 ### 1. 빌드 (PC)
@@ -73,16 +92,93 @@ JPA `ddl-auto` 설정이 없어서 테이블이 자동으로 바뀌지 않습니
 sudo vi /etc/spring-playground.env
 sudo systemctl restart spring-playground
 ```
-Spring Boot는 환경 변수가 yml 값을 덮어씁니다.  
-예: `spring.datasource.url` → `SPRING_DATASOURCE_URL`
 
-현재 사용하는 변수:
+### 동작 구조
+
+```
+/etc/spring-playground.env  (root 소유, 600)
+        │  EnvironmentFile=
+        ▼
+spring-playground.service (User=ec2-user, java -jar /home/ec2-user/app.war)
+        ▼
+application.yml 의 ${SPRING_...} 자리에 값이 들어감
+```
+
+### 사용하는 변수
+
 ```
 SPRING_DATASOURCE_URL=jdbc:mysql://<RDS_ENDPOINT>:3306/playground
 SPRING_DATASOURCE_USERNAME=admin
 SPRING_DATASOURCE_PASSWORD=
 SPRING_MAIL_PASSWORD=
 ```
+
+| 변수 | 필수 | 없을 때 |
+|---|---|---|
+| `SPRING_DATASOURCE_PASSWORD` | 필수 (yml 기본값 없음) | 앱이 기동하지 않음 |
+| `SPRING_DATASOURCE_URL` | 운영 필수 | yml 기본값(localhost)으로 접속하려다 실패 |
+| `SPRING_DATASOURCE_USERNAME` | 운영 필수 | yml 기본값(`myuser`)으로 접속하려다 실패 |
+| `SPRING_MAIL_PASSWORD` | 선택 | 앱은 뜨지만 비밀번호 찾기 메일 발송 실패 |
+
+작성 규칙
+- 한 줄에 `KEY=VALUE` 하나. `=` 앞뒤 공백 없이, `export` 붙이지 않음
+- 구글 앱 비밀번호는 화면에 `abcd efgh ijkl mnop`처럼 보이지만 **공백을 빼고 16자 그대로** 입력
+
+### 권한
+
+```bash
+sudo chown root:root /etc/spring-playground.env
+sudo chmod 600 /etc/spring-playground.env
+ls -l /etc/spring-playground.env   # -rw------- 1 root root
+```
+systemd가 root로 파일을 읽은 뒤 ec2-user로 앱을 실행하므로 ec2-user에게 읽기 권한이 없어도 됩니다.
+
+### 적용 확인 (값은 출력하지 않고 이름만)
+
+```bash
+systemctl show spring-playground -p EnvironmentFiles
+sudo cat /proc/$(systemctl show -p MainPID --value spring-playground)/environ | tr '\0' '\n' | cut -d= -f1 | grep SPRING_
+```
+
+### 서비스 파일 (새로 만들 때)
+
+```ini
+# /etc/systemd/system/spring-playground.service
+[Unit]
+Description=spring-playground
+After=network.target
+
+[Service]
+User=ec2-user
+WorkingDirectory=/home/ec2-user
+EnvironmentFile=/etc/spring-playground.env
+ExecStart=/usr/bin/java -jar /home/ec2-user/app.war
+SuccessExitStatus=143
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+```bash
+sudo systemctl daemon-reload            # 서비스 파일을 바꿀 때마다
+sudo systemctl enable --now spring-playground
+```
+
+### 문제가 생기면
+
+| 증상 | 원인 |
+|---|---|
+| 로그에 `Access denied for user ...` | `SPRING_DATASOURCE_PASSWORD`가 없거나 틀림 (변수가 없으면 `${SPRING_DATASOURCE_PASSWORD}` 글자 그대로 비밀번호로 쓰여서 이 에러가 남) |
+| `Communications link failure` | `SPRING_DATASOURCE_URL` 오류 또는 RDS 중지 상태 |
+| `systemctl status`의 `since`가 계속 바뀜 | 기동 실패 후 `Restart=on-failure`로 재시작 반복. `journalctl -u spring-playground -n 50 --no-pager`로 원인 확인 |
+| 메일만 안 감 | `SPRING_MAIL_PASSWORD` 비었음 / 공백 포함 / 폐기된 예전 값 |
+
+### 구글 앱 비밀번호 교체
+
+예전 앱 비밀번호는 git 기록에 남아 있으므로 폐기하고 새로 발급해서 씁니다.
+1. Google 계정 → 보안 → 앱 비밀번호 → 기존 비밀번호 삭제, 새로 생성
+2. 서버 `/etc/spring-playground.env`의 `SPRING_MAIL_PASSWORD`와 로컬 이클립스 Run Configuration 둘 다 교체
+3. `sudo systemctl restart spring-playground`
 
 ## 자주 쓰는 명령
 
@@ -96,7 +192,7 @@ SPRING_MAIL_PASSWORD=
 | Nginx 재시작 | `sudo systemctl restart nginx` |
 
 앱은 터미널에서 `java -jar`로 직접 실행하지 않습니다.  
-환경 변수가 없는 상태로 떠서 `localhost:3306`에 접속하려다 실패합니다.
+env 파일을 읽지 않아 DB 비밀번호가 없고, DB 주소도 기본값 `localhost:3306`이라 기동에 실패합니다.
 
 ## 실습 종료 시 (비용)
 
