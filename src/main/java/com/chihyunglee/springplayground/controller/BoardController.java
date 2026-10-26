@@ -37,8 +37,10 @@ public class BoardController {
     // 게시판 목록
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
-    public String list(Model model, Principal principal) {
-        model.addAttribute("posts", boardService.findAll());
+    public String list(@RequestParam(value = "keyword", required = false) String keyword,
+                       Model model, Principal principal) {
+        model.addAttribute("posts", boardService.searchByTitle(keyword));
+        model.addAttribute("keyword", keyword);
         return "board/usr.bbs.list"; // list.jsp
     }
 

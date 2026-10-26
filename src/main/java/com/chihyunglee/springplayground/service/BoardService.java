@@ -25,6 +25,14 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
+    // 제목 검색 (검색어가 없으면 전체 목록)
+    public List<BoardPost> searchByTitle(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return boardRepository.findAll();
+        }
+        return boardRepository.findByTitleContaining(keyword.trim());
+    }
+
     public Optional<BoardPost> findById(Long id) {
         return boardRepository.findById(id);
     }

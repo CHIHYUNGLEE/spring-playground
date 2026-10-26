@@ -82,7 +82,37 @@
             text-decoration: none; 
             font-weight: bold;
         }
-        .new-post:hover .btn_home:hover { 
+        .search-form {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .search-form input[type="text"] {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .search-form button, .search-form a {
+            background: #764ba2;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .search-form button:hover, .search-form a:hover {
+            background: #6a11cb;
+        }
+        .no-result {
+            text-align: center;
+            color: #777;
+            padding: 30px 0;
+        }
+        .new-post:hover .btn_home:hover {
             background: #6a11cb; 
         }
     </style>
@@ -90,6 +120,24 @@
 <body>
 <div class="container">
     <h2>게시판 목록</h2>
+
+    <%-- 제목 검색 --%>
+    <form class="search-form" action="/board/list" method="get">
+        <input type="text" name="keyword" placeholder="제목으로 검색" value="${fn:escapeXml(keyword)}">
+        <button type="submit">검색</button>
+        <c:if test="${not empty keyword}">
+            <a href="/board/list">전체보기</a>
+        </c:if>
+    </form>
+
+    <c:if test="${empty posts}">
+        <div class="no-result">
+            <c:choose>
+                <c:when test="${not empty keyword}">'${fn:escapeXml(keyword)}' 검색 결과가 없습니다.</c:when>
+                <c:otherwise>등록된 게시글이 없습니다.</c:otherwise>
+            </c:choose>
+        </div>
+    </c:if>
 
     <c:forEach var="post" items="${posts}">
         <div class="post-card">
